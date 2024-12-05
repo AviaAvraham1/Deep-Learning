@@ -42,23 +42,33 @@ class SVMHingeLoss(ClassifierLoss):
         assert x_scores.shape[0] == y.shape[0]
         assert y.dim() == 1
 
-        # TODO: Implement SVM loss calculation based on the hinge-loss formula.
-        #  Notes:
-        #  - Use only basic pytorch tensor operations, no external code.
-        #  - Full credit will be given only for a fully vectorized
-        #    implementation (zero explicit loops).
-        #    Hint: Create a matrix M where M[i,j] is the margin-loss
-        #    for sample i and class j (i.e. s_j - s_{y_i} + delta).
+        # Create a matrix M where M[i,j] is the margin-loss for sample i and class j
+        margins = x_scores - x_scores[torch.arange(x_scores.shape[0]), y].unsqueeze(1) + self.delta
+        margins[torch.arange(x_scores.shape[0]), y] = 0  # Set margin to 0 for the true class
 
-        loss = None
-        # ====== YOUR CODE: ======
-        raise NotImplementedError()
-        # ========================
+        # Calculate the hinge loss
+        loss = torch.max(torch.relu(margins), dim=1)[0].mean()
 
-        # TODO: Save what you need for gradient calculation in self.grad_ctx
-        # ====== YOUR CODE: ======
-        raise NotImplementedError()
-        # ========================
+        # Save what you need for gradient calculation in self.grad_ctx
+        self.grad_ctx['x_scores'] = x_scores
+        self.grad_ctx['y'] = y
+        self.grad_ctx['margins'] = margins
+
+        return loss
+
+
+        N, C = x_scores.shape
+        actual_label_scores = x_scores[torch.arange(N), y].unsqueeze(1) 
+        margins = x_scores - actual_label_scores + self.delta  
+        margins[torch.arange(N), y] = 0 
+        hinge_loss = torch.clamp(margins, min=0)
+        loss = hinge_loss.sum() / N
+        self.grad_ctx = {
+            "margins": hinge_loss,
+            "x": x,
+            "y": y,
+            "x_scores": x_scores,
+        }
 
         return loss
 

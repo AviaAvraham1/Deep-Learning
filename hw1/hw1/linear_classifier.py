@@ -4,6 +4,7 @@ from collections import namedtuple
 from torch.utils.data import DataLoader
 
 from .losses import ClassifierLoss
+from hw1.transforms import BiasTrick
 
 
 class LinearClassifier(object):
@@ -20,11 +21,11 @@ class LinearClassifier(object):
         # TODO:
         #  Create weights tensor of appropriate dimensions
         #  Initialize it from a normal dist with zero mean and the given std.
-
-        self.weights = None
-        # ====== YOUR CODE: ======
-        raise NotImplementedError()
-        # ========================
+        self.weights = torch.normal(
+            mean=0.0,
+            std=weight_std,
+            size=(n_features + 1, n_classes)
+        )
 
     def predict(self, x: Tensor):
         """
@@ -37,18 +38,13 @@ class LinearClassifier(object):
             class_scores: Tensor of shape (N,n_classes) with the class score
                 per sample.
         """
+        x = BiasTrick()(x)
 
-        # TODO:
-        #  Implement linear prediction.
-        #  Calculate the score for each class using the weights and
-        #  return the class y_pred with the highest score.
-
-        y_pred, class_scores = None, None
-        # ====== YOUR CODE: ======
-        raise NotImplementedError()
-        # ========================
+        class_scores = torch.matmul(x, self.weights)
+        y_pred = torch.argmax(class_scores, dim=1)
 
         return y_pred, class_scores
+
 
     @staticmethod
     def evaluate_accuracy(y: Tensor, y_pred: Tensor):
@@ -60,14 +56,11 @@ class LinearClassifier(object):
         :return: The accuracy in percent.
         """
 
-        # TODO:
         #  calculate accuracy of prediction.
         #  Do not use an explicit loop.
-
-        acc = None
-        # ====== YOUR CODE: ======
-        raise NotImplementedError()
-        # ========================
+        correct_predictions = (y == y_pred).sum().item()
+        total_predictions = y.size(0) 
+        acc = correct_predictions / total_predictions
 
         return acc * 100
 
