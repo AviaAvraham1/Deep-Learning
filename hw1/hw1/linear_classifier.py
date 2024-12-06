@@ -24,7 +24,7 @@ class LinearClassifier(object):
         self.weights = torch.normal(
             mean=0.0,
             std=weight_std,
-            size=(n_features + 1, n_classes)
+            size=(n_features, n_classes)
         )
 
     def predict(self, x: Tensor):
@@ -38,7 +38,7 @@ class LinearClassifier(object):
             class_scores: Tensor of shape (N,n_classes) with the class score
                 per sample.
         """
-        x = BiasTrick()(x)
+        #x_with_bias = BiasTrick()(x)
 
         class_scores = torch.matmul(x, self.weights)
         y_pred = torch.argmax(class_scores, dim=1)
@@ -82,7 +82,7 @@ class LinearClassifier(object):
         for epoch_idx in range(max_epochs):
             total_correct = 0
             average_loss = 0
-
+            
             # TODO:
             #  Implement model training loop.
             #  1. At each epoch, evaluate the model on the entire training set
@@ -94,13 +94,59 @@ class LinearClassifier(object):
             #  4. Don't forget to add a regularization term to the loss,
             #     using the weight_decay parameter.
 
-            # ====== YOUR CODE: ======
-            raise NotImplementedError()
-            # ========================
+            total_samples = 0
+
+            for x_batch, y_batch in dl_train:
+                # forward 
+                y_pred, scores = self.predict(x_batch)
+                loss = loss_fn.loss(x_batch, y_batch, scores, y_pred)
+
+                # calculate regularization
+                reg_term = weight_decay * (self.weights ** 2).sum() / 2
+                loss += reg_term
+
+                # loss with regularization
+                loss_fn.grad_ctx["x"] = x_batch
+                grads = loss_fn.grad() + weight_decay * self.weights
+                self.weights -= learn_rate * grads  # gradient step
+
+                # update stuff
+                total_correct += (y_pred == y_batch).sum().item() # item converts from Tensor to python element
+                average_loss += loss.item()
+                total_samples += y_batch.shape[0]
+
+            average_loss /= len(dl_train)
+            train_res.accuracy.append(total_correct / total_samples * 100)
+            train_res.loss.append(average_loss)
+
+            # validation
+            total_correct = 0
+            average_loss = 0
+            total_samples = 0
+
+            for x_batch, y_batch in dl_valid:
+                # calc loss
+                y_pred, scores = self.predict(x_batch)
+                loss = loss_fn.loss(x_batch, y_batch, scores, y_pred)
+                
+                # regularization
+                reg_term = weight_decay * (self.weights ** 2).sum() / 2
+                loss += reg_term
+
+                # update more stuff
+                total_correct += (y_pred == y_batch).sum().item()
+                average_loss += loss.item()
+                total_samples += y_batch.shape[0]
+
+            average_loss /= len(dl_valid)
+            valid_res.accuracy.append(total_correct / total_samples * 100)
+            valid_res.loss.append(average_loss)
+
             print(".", end="")
 
         print("")
         return train_res, valid_res
+            
 
     def weights_as_images(self, img_shape, has_bias=True):
         """
@@ -114,22 +160,25 @@ class LinearClassifier(object):
         # TODO:
         #  Convert the weights matrix into a tensor of images.
         #  The output shape should be (n_classes, C, H, W).
-
-        # ====== YOUR CODE: ======
-        raise NotImplementedError()
-        # ========================
+        weights_no_bias = self.weights[1:, :] if has_bias else self.weights
+        expected_features = img_shape[0] * img_shape[1] * img_shape[2]
+        assert weights_no_bias.shape[0] == expected_features, (
+            f"Expected {expected_features} features, got {weights_no_bias.shape[0]}"
+        )
+        n_classes = weights_no_bias.shape[1]
+        w_images = weights_no_bias.T.reshape(n_classes, *img_shape)
 
         return w_images
 
 
 def hyperparams():
-    hp = dict(weight_std=0.0, learn_rate=0.0, weight_decay=0.0)
+    hp = dict(weight_std=0.01, learn_rate=0.01, weight_decay=0.0)
 
     # TODO:
     #  Manually tune the hyperparameters to get the training accuracy test
     #  to pass.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    #raise NotImplementedError()
     # ========================
 
     return hp

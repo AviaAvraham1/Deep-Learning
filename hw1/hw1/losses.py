@@ -1,5 +1,6 @@
 import abc
 import torch
+from hw1.transforms import BiasTrick
 
 
 class ClassifierLoss(abc.ABC):
@@ -42,27 +43,22 @@ class SVMHingeLoss(ClassifierLoss):
         assert x_scores.shape[0] == y.shape[0]
         assert y.dim() == 1
 
-        # Create a matrix M where M[i,j] is the margin-loss for sample i and class j
-        margins = x_scores - x_scores[torch.arange(x_scores.shape[0]), y].unsqueeze(1) + self.delta
-        margins[torch.arange(x_scores.shape[0]), y] = 0  # Set margin to 0 for the true class
-
-        # Calculate the hinge loss
-        loss = torch.max(torch.relu(margins), dim=1)[0].mean()
-
-        # Save what you need for gradient calculation in self.grad_ctx
-        self.grad_ctx['x_scores'] = x_scores
-        self.grad_ctx['y'] = y
-        self.grad_ctx['margins'] = margins
-
-        return loss
-
+        # Implement SVM loss calculation based on the hinge-loss formula.
+        #  Notes:
+        #  - Use only basic pytorch tensor operations, no external code.
+        #  - Full credit will be given only for a fully vectorized
+        #    implementation (zero explicit loops).
+        #    Hint: Create a matrix M where M[i,j] is the margin-loss
+        #    for sample i and class j (i.e. s_j - s_{y_i} + delta).
 
         N, C = x_scores.shape
-        actual_label_scores = x_scores[torch.arange(N), y].unsqueeze(1) 
-        margins = x_scores - actual_label_scores + self.delta  
-        margins[torch.arange(N), y] = 0 
-        hinge_loss = torch.clamp(margins, min=0)
+        correct_class_scores = x_scores[range(N), y]
+        M = x_scores - correct_class_scores[:, None] + self.delta
+        M[range(N), y] = 0
+        hinge_loss = (M > 0) * M 
         loss = hinge_loss.sum() / N
+
+        # Save what you need for gradient calculation in self.grad_ctx
         self.grad_ctx = {
             "margins": hinge_loss,
             "x": x,
@@ -83,9 +79,14 @@ class SVMHingeLoss(ClassifierLoss):
         #  Same notes as above. Hint: Use the matrix M from above, based on
         #  it create a matrix G such that X^T * G is the gradient.
 
-        grad = None
-        # ====== YOUR CODE: ======
-        raise NotImplementedError()
-        # ========================
-
+        margins = self.grad_ctx["margins"]
+        x = self.grad_ctx["x"]
+        #x_with_bias = BiasTrick()(x)
+        
+        y = self.grad_ctx["y"]
+        N, C = margins.shape
+        G = (margins > 0).float()
+        G[range(N), y] = -G.sum(dim=1)
+        grad = torch.matmul(x.T, G) / N
+        
         return grad
