@@ -24,6 +24,7 @@ class LinearClassifier(object):
         self.weights = torch.normal(
             mean=0.0,
             std=weight_std,
+            # n_features conatins bias
             size=(n_features, n_classes)
         )
 
