@@ -58,6 +58,15 @@ but as an advantage, we may find that the model generalizes better (compared to 
 sensitivity to small variations in the input data by forcing the decision boundary to push further away from the
 training samples.
 
+If delta is specifically negative:
+If we denote the score of the correct class St and the score of the rest of the classes Sf, then in the standard 
+case we demand St-Sf>d when d is the delta and it's positive. It means we require the corrects class to give 
+a score that is higher by a certain delta than the rest of the classes. 
+In the case where d<0, we could look at it as if we require: Sf-St<-d where -d is a positive value, so it 
+means we actually allow, in addition to St being higher then Sf as usual, that Sf will actually be equal 
+or higher than St by a certain delta. What it practically means is that we actually allow certain level 
+of mistake without pentalizing it, so we can expect it would harm the accuracy of the model (though probably reduce overfitting).
+
 """
 
 part2_q2 = r"""
@@ -145,12 +154,18 @@ small values and farther in their large ones.
 However, if we used linear in that range, like (0.001, 100, 200, ... 1000), we'd miss out on most of the values
 the logaritmic method check, and there might be a large differnce between those small values
 
-2. The total number of times the model was fitted to data during cross-validation can be calculated by
-considering the number of combinations of hyperparameters and the number of folds in cross-validation:
-degree_range: 3
-lambda_range: 20
-k_folds: 3
-total of times the model was fitted: 3*20*3 = 180.
+2. The number of times we trained our model can be calculated by looking at our code:
+```python
+degree_range = np.arange(1, 4)
+lambda_range = np.logspace(-3, 2, base=10, num=20)
+
+best_hypers = hw1linreg.cv_best_hyperparams(
+    model, x_train, y_train, k_folds=3,
+    degree_range=degree_range, lambda_range=lambda_range
+) 
+```
+
+therefore, we have 4 possible values for degree, 20 for lambda and 3 folds, so overall the total number of times the model was fitted is: 3\*20\*3 = 180.
 
 """
 
