@@ -85,7 +85,6 @@ class LeakyReLU(Layer):
         # ====== YOUR CODE: ======
         out = torch.maximum(self.alpha * x, x)
         # ========================
-        #print(f"LeakyReLU forward shape: {x.shape}")
         self.grad_cache["x"] = x
         return out
 
@@ -96,13 +95,14 @@ class LeakyReLU(Layer):
         """
         x = self.grad_cache["x"]
 
-        print(f"LeakyReLU backward dout shape: {dout.shape}")
         # Implement gradient w.r.t. the input x
         # ====== YOUR CODE: ======
-        chain_rule_gradient = torch.where(x > 0, 1.0, self.alpha)
-        #chain_rule_gradient = ((x > 0) + self.alpha * (x <= 0))
-        print(f"chain_rule_gradient shape: {chain_rule_gradient.shape}")
-        dx = dout * chain_rule_gradient
+        # chain_rule_gradient = torch.where(x > 0, 1.0, self.alpha)
+        # #chain_rule_gradient = ((x > 0) + self.alpha * (x <= 0))
+        # print(f"chain_rule_gradient shape: {chain_rule_gradient.shape}")
+        # dx = dout * chain_rule_gradient
+        assert dout.shape == x.shape, f"Shapes mismatch: dout {dout.shape}, x {x.shape}"
+        dx = dout * ((x > 0) + self.alpha * (x <= 0))
         # ========================
         return dx
 
@@ -424,9 +424,7 @@ class Sequential(Layer):
         # ====== YOUR CODE: ======
         din = dout
         for layer in reversed(self.layers):
-            print("working on layer", layer, "dout:", dout.shape)
             din = layer.backward(din)
-            print("ok")
         # ========================
 
         return din
@@ -496,23 +494,22 @@ class MLP(Layer):
         # TODO: Build the MLP architecture as described.
         # ====== YOUR CODE: ======
         if activation == "relu":
-            activation_fn = ReLU()
+            activation_fn = ReLU
         elif activation == "sigmoid":
-            activation_fn = Sigmoid()
+            activation_fn = Sigmoid 
         else:
             print("bro no such activation function")
 
         prev_dim = in_features
         for current_dim in hidden_features:
             layers.append(Linear(prev_dim, current_dim)) # add fully connected layer
-            layers.append(activation_fn) 
+            layers.append(activation_fn()) 
             #if dropout > 0:
             #    layers.append(Dropout(dropout))
             prev_dim = current_dim  # input for next layer is the size of the current layer 
         layers.append(Linear(prev_dim, num_classes))  # Output layer
         # ========================
 
-        print("initiazlied")
         self.sequence = Sequential(*layers)
 
     def forward(self, x, **kw):
