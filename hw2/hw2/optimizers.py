@@ -93,19 +93,23 @@ class MomentumSGD(Optimizer):
 
         # Add your own initializations as needed.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        self.momentums_list = [torch.zeros_like(p) for p, _ in self.params]
         # ========================
 
     def step(self):
-        for p, dp in self.params:
+        for i, (p, dp) in enumerate(self.params):
             if dp is None:
                 continue
 
-            # TODO: Implement the optimizer step.
+            # Implement the optimizer step.
             # update the parameters tensor based on the velocity. Don't forget
             # to include the regularization term.
             # ====== YOUR CODE: ======
-            raise NotImplementedError()
+            v = self.momentums_list[i]
+            d = - self.learn_rate * (dp + self.reg * p)
+            v = self.momentum * v + d
+            p += d
+            self.momentums_list[i] = v 
             # ========================
 
 
@@ -124,20 +128,22 @@ class RMSProp(Optimizer):
         self.decay = decay
         self.eps = eps
 
-        # TODO: Add your own initializations as needed.
+        # Add your own initializations as needed.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        self.rms_list = [torch.zeros_like(p) for p, _ in self.params]
         # ========================
 
     def step(self):
-        for p, dp in self.params:
+        for i, (p, dp) in enumerate(self.params):
             if dp is None:
                 continue
 
-            # TODO: Implement the optimizer step.
+            # Implement the optimizer step.
             # Create a per-parameter learning rate based on a decaying moving
             # average of it's previous gradients. Use it to update the
             # parameters tensor.
             # ====== YOUR CODE: ======
-            raise NotImplementedError()
+            r = self.decay * self.rms_list[i] + (1-self.decay) * torch.square(dp)
+            temp = torch.sqrt(r + self.eps)
+            p -= self.learn_rate * (1 / temp) * dp
             # ========================

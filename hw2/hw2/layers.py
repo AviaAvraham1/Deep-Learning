@@ -373,19 +373,28 @@ class Dropout(Layer):
         self.p = p
 
     def forward(self, x, **kw):
-        # TODO: Implement the dropout forward pass.
+        # Implement the dropout forward pass.
         #  Notice that contrary to previous layers, this layer behaves
         #  differently a according to the current training_mode (train/test).
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        if self.training_mode == False:
+            return x * (1 - self.p)
+            
+        mask = (torch.rand(x.shape) > self.p).float()
+        self.grad_cache["mask"] = mask
+        out = x * mask
         # ========================
 
         return out
 
     def backward(self, dout):
-        # TODO: Implement the dropout backward pass.
+        # Implement the dropout backward pass.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        if self.training_mode == True:
+            mask = self.grad_cache["mask"]
+            dx = dout * mask
+        else:
+            dx = dout * (1 - self.p)
         # ========================
 
         return dx
@@ -504,8 +513,8 @@ class MLP(Layer):
         for current_dim in hidden_features:
             layers.append(Linear(prev_dim, current_dim)) # add fully connected layer
             layers.append(activation_fn()) 
-            #if dropout > 0:
-            #    layers.append(Dropout(dropout))
+            if dropout > 0:
+               layers.append(Dropout(dropout))
             prev_dim = current_dim  # input for next layer is the size of the current layer 
         layers.append(Linear(prev_dim, num_classes)) 
         # ========================
