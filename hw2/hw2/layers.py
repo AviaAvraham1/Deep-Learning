@@ -491,7 +491,7 @@ class MLP(Layer):
         """
         layers = []
 
-        # TODO: Build the MLP architecture as described.
+        # Build the MLP architecture as described.
         # ====== YOUR CODE: ======
         if activation == "relu":
             activation_fn = ReLU
@@ -507,7 +507,7 @@ class MLP(Layer):
             #if dropout > 0:
             #    layers.append(Dropout(dropout))
             prev_dim = current_dim  # input for next layer is the size of the current layer 
-        layers.append(Linear(prev_dim, num_classes))  # Output layer
+        layers.append(Linear(prev_dim, num_classes)) 
         # ========================
 
         self.sequence = Sequential(*layers)
