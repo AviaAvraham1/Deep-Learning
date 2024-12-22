@@ -79,26 +79,40 @@ class Trainer(abc.ABC):
                 verbose = True
             self._print(f"--- EPOCH {epoch+1}/{num_epochs} ---", verbose)
 
-            # TODO: Train & evaluate for one epoch
+            # Train & evaluate for one epoch
             #  - Use the train/test_epoch methods.
             #  - Save losses and accuracies in the lists above.
             # ====== YOUR CODE: ======
-            raise NotImplementedError()
+            kw["verbose"] = verbose
+        
+            epoch_train_result = self.train_epoch(dl_train, **kw)
+            train_acc.append(epoch_train_result.accuracy)
+            losses_without_grad = [float(x.detach().item()) for x in epoch_train_result.losses]
+            train_loss += losses_without_grad
+
+            epoch_test_result = self.test_epoch(dl_test, **kw)
+            test_acc.append(epoch_test_result.accuracy)
+            test_loss += [float(x.detach().item()) for x in epoch_test_result.losses]
             # ========================
 
-            # TODO:
             #  - Optional: Implement early stopping. This is a very useful and
             #    simple regularization technique that is highly recommended.
             #  - Optional: Implement checkpoints. You can use the save_checkpoint
             #    method on this class to save the model to the file specified by
             #    the checkpoints argument.
-            if best_acc is None or test_result.accuracy > best_acc:
+            if best_acc is None or epoch_test_result.accuracy > best_acc:
                 # ====== YOUR CODE: ======
-                raise NotImplementedError()
+                best_acc = epoch_test_result.accuracy
+                epochs_without_improvement = 0
+                
+                if checkpoints:
+                    self.save_checkpoint(checkpoints)
                 # ========================
             else:
                 # ====== YOUR CODE: ======
-                raise NotImplementedError()
+                epochs_without_improvement += 1
+                if early_stopping and epochs_without_improvement >= early_stopping:
+                    break
                 # ========================
 
         return FitResult(actual_num_epochs, train_loss, train_acc, test_loss, test_acc)
@@ -286,20 +300,35 @@ class ClassifierTrainer(Trainer):
 class LayerTrainer(Trainer):
     def __init__(self, model, loss_fn, optimizer):
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        super().__init__(model)
+        self.loss_fn = loss_fn
+        self.optimizer = optimizer
         # ========================
 
     def train_batch(self, batch) -> BatchResult:
         X, y = batch
 
-        # TODO: Train the Layer model on one batch of data.
+        # Train the Layer model on one batch of data.
         #  - Forward pass
         #  - Backward pass
         #  - Optimize params
         #  - Calculate number of correct predictions (make sure it's an int,
         #    not a tensor) as num_correct.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        batch_size, channels, height, width = X.size()
+        tesnsor_2d = X.view(batch_size, channels * height * width)
+
+        #Forward pass
+        predictions = self.model(tesnsor_2d)
+        loss = self.loss_fn(predictions, y)
+
+        # Backward pass
+        dloss = self.loss_fn.backward(loss)
+        self.model.backward(dloss)
+        self.optimizer.step()
+
+        y_pred = torch.argmax(predictions, dim = 1)
+        num_correct = (y_pred == y).sum().item()
         # ========================
 
         return BatchResult(loss, num_correct)
@@ -307,9 +336,17 @@ class LayerTrainer(Trainer):
     def test_batch(self, batch) -> BatchResult:
         X, y = batch
 
-        # TODO: Evaluate the Layer model on one batch of data.
+        # Evaluate the Layer model on one batch of data.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        batch_size, channels, height, width = X.size()
+        tesnsor_2d = X.view(batch_size, channels * height * width)
+
+        predictions = self.model(tesnsor_2d)
+        loss = self.loss_fn(predictions, y)
+
+        y_pred = torch.argmax(predictions, dim = 1)
+        num_correct = (y_pred == y).sum().item()
+
         # ========================
 
         return BatchResult(loss, num_correct)
