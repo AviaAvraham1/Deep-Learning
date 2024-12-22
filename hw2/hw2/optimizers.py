@@ -68,11 +68,13 @@ class VanillaSGD(Optimizer):
             if dp is None:
                 continue
 
-            # TODO: Implement the optimizer step.
+            # Implement the optimizer step.
             #  Update the gradient according to regularization and then
             #  update the parameters tensor.
             # ====== YOUR CODE: ======
-            raise NotImplementedError()
+            reg_term = self.reg * p
+            total_grad = dp + reg_term  # calculate the gradiant with respect to both the deraivative and the regularization
+            p -= self.learn_rate * total_grad
             # ========================
 
 
@@ -89,7 +91,7 @@ class MomentumSGD(Optimizer):
         self.reg = reg
         self.momentum = momentum
 
-        # TODO: Add your own initializations as needed.
+        # Add your own initializations as needed.
         # ====== YOUR CODE: ======
         raise NotImplementedError()
         # ========================

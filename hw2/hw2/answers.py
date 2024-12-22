@@ -11,26 +11,37 @@ math (delimited with $$).
 part1_q1 = r"""
 **Your answer:**
 
+1. A. the shape of this tensor is (64,512,64,1024) - we derive every entrance in the matrix according to every entrance in the other matrix.
+   B. yes, the Jacobian matrix is sparse since each y_i,j is a function of only one x_i,j 
+   (the ith sample in the batch), so we get a diagonal matrix: diag(J_i), where J_i is the
+    Jacobian matrix of y_i with respect to x_i.
+   C. There is no need to materialize the whole Jacobian matrix, instead of calculating by the 
+   chain-rule: dL/dx = dL/dy * dy/dx, we can use the fact that the Jacobian matrix is diagonal matrix where
+   each element is the Jacobian matrix of y_i with respect to x_i, i.e W^T (the derivative of x*W^T+b w.r.t x)
+   and compute dL/dx = dL/dy * W^T (since dL/dx_i = dL/dy_i * W^T for each i, this is equvilent to multiplying
+   directly by W^T).
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
 
+2. A. (64,512,512,1024).
+   B. yes, similarly to the previous question, the Jacobian matrix is sparse since each y_i,j depends on only
+   the j-th row of W. so the Jacobian matrix is a block-diagonal matrix where each block is a matrix of size 512x1024.
+   C. we can use the same trick as before, instead of calculating the whole Jacobian matrix, we can calculate
+   dL/dW = dL/dy * X (since X is the derivative of X*W^T+b w.r.t W).
+
+   
 """
 
 part1_q2 = r"""
 **Your answer:**
 
+No, it is not required to use back-propagation in order to train neural networks with descent-based optimization.
+The back-propagation algorithm is a method to calculate the gradient of the loss function with respect to the weights
+of the network, but actually there are other methods to compute gardients to use in gradient descent optimization.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+For example, we learned in the Automatic Differentiation tutorial, that we can use numerical diffrentiation
+(the explicit method to compute gradients, as we learned in Calculus) but as we said, it is inexact and very expensive.
+There is also another option of using automatic differentiation in forward mode, which is different from backpropagation which is done in
+reverse mode. However also this option is also not as efficient as backpropagation.
 
 """
 
@@ -41,9 +52,11 @@ An equation: $e^{i\pi} -1 = 0$
 
 def part2_overfit_hp():
     wstd, lr, reg = 0, 0, 0
-    # TODO: Tweak the hyperparameters until you overfit the small dataset.
+    # Tweak the hyperparameters until you overfit the small dataset.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    wstd = 1.0 
+    lr = 0.01
+    reg = 0.0
     # ========================
     return dict(wstd=wstd, lr=lr, reg=reg)
 
@@ -57,10 +70,14 @@ def part2_optim_hp():
         0,
     )
 
-    # TODO: Tweak the hyperparameters to get the best results you can.
+    # Tweak the hyperparameters to get the best results you can.
     # You may want to use different learning rates for each optimizer.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    lr_vanilla = 0.00009 
+    reg = 0.00000215
+    wstd = 0.001
+    lr_momentum = 0.00001
+    lr_rmsprop = 0.00001
     # ========================
     return dict(
         wstd=wstd,
