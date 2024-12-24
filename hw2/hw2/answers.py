@@ -107,54 +107,146 @@ def part2_dropout_hp():
 
 part2_q1 = r"""
 **Your answer:**
+1. Yes, the graphs match our expectations. 
+When dropout is not used, the model overfits the training data, and thus the test loss is significantly higher
+than the training loss. Also, we can see that the training loss is lower compared to when droput is used.
+In general, it happens because we get more expressiveness when the network is fully connected - 
+without dropout we use all of our network nuerons all the time, as opposed to when we use dropout.
 
-
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
-
+2. When droput=0.8, we turned off most of the neurons, and the network is less expressive, and thus
+the loss is high, both in training and test.
+When dropout=0.4 we get a good balance between expressiveness and generalization, and thus we see nice
+results in the training loss and similar ones in the test loss.  
 """
 
 part2_q2 = r"""
+When training a model with the cross-entropy loss function, is it possible for the test loss to **increase** for a few epochs while the test accuracy also **increases**?
+
+If it's possible explain how, if it's not explain why not.
 **Your answer:**
-
-
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+Yes, it is possible for the test loss to increase for a few epochs while the test accuracy also increases.
+The cross entopy loss also pentalizes correct predictions when they are not given with full confidence.
+Therefore, it is theoretically possible that the model will predict in a certain epoch more correct samples
+and thus the accuracy will increase (since accuracy simply measures the fraction of correct predictions),
+but the loss will increase because the model is not confident in its predictions, and thus the overall loss
+will increase.
 
 """
 
 part2_q3 = r"""
+
 **Your answer:**
+1. Gradient descent is an optimiztaion method used to minimize the loss function of the model by iteratively
+computing the gradient of the loss function with respect to the model's parameters and updating the parameters
+in the opposite direction of the gradient, which is meant to show us the direction of the steepest descent of
+the function at each point we are at.
+Backpropagation is an algorithm used to compute the gradient of the loss function with respect to the model's
+parameters.
+So while gradient descent is the optimization method, aimed to take us to the minimum of the loss,
+backpropagation is the algorithm used to compute the slope at each point (gradients).
 
+2. In GD, we go over all of our data samples in each iteration to compute the gradient that will determine how we'll
+update the parameters in that iteration in order to descend. However, in SGD, we randomly pick one sample and go in 
+the direction of its gradient.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+    In GD, we update: $ \vec{\theta} \leftarrow \vec{\theta} - \eta \nabla L(\theta) $
 
+    In SGD, we update for some sample i: $\vec{\theta} \leftarrow \vec{\theta} - \eta \nabla L_i(\theta)$
+
+3. 
+In the practice of deep learning, SGD has some advatages over GD:
+* **Fit in memory** - in some cases, espcially with large datasets, we might not be able to fit all of the data
+in our machine's memory, which is needed in order to calculate the gradient step, in SGD, we only have to load
+one sample which does fit in memory.
+* **Faster** - even if we could fit all of the data in memory, iterating over all of it *in every iteration* is
+expensive computationally and takes a long time. Working with SGD, however, is much faster, espcially in large
+datasets, since we have less computations to do.
+* **Higher success rate** - As we discussed in class, empirically, SGD is often more successful when compared
+ to GD, because of considerations of noise, convergance rate and overfitting, for example
+
+4. 
+1. Yes, this approach will produce a gradient equivalent to GD:
+$$L_{\text{batches}} = \sum_{\text{all\_batches}} L_{b} = \sum_{\text{all\_batches}} \sum_{\text{batch\_size}} L(x_{b,i}) = \sum_{\text{all\_samples}} L(x_{j}) = L_{\text{GD}}$$
+
+    as we can see, the loss function of the whole dataset is the sum of the loss functions of all the batches.
+    
+2. What's likely happened here is that some of the intermediate results may have accumulated over time in the
+compute of the gradient and thus even though we made sure that each batch fits in memory, at some point the
+accumulated results together with the current batch got too big to fit in memory and therefore we got an error.
 """
 
 part2_q4 = r"""
 **Your answer:**
+1.
+Our derivative is $$f'(x) = f_n'\left(f_{n-1}\left(f_{n-2}\left(\ldots f_1(x) \ldots\right)\right)\right) \cdot f_{n-1}'\left(f_{n-2}\left(\ldots f_1(x) \ldots\right)\right) \cdots f_1'(x)$$
 
+A.
+We can calculate the gradient using forward mode AD as follows:
 
-Write your answer using **markdown** and $\LaTeX$:
 ```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+function compute_gradient(f, x_0):
+    # init 
+    last_grad <- 1
+    last_val <- x_0
 
+    for i from 1 to n:
+        curr_grad <- last_grad * f[i].derivative(last_val)
+        curr_val <- f[i](last_val)
+        last_grad <- curr_grad
+        last_val <- curr_val
+
+    return last_grad
+```
+
+**The memory complexity is O(1)**
+
+At the end of the run we will have the gradient of f, by the definition shown above and the implementation
+of compute_gradient. It's trivial to see that the memory complexity is O(1), because we always work with
+up to 4 variables every time.
+
+B.
+
+We can calculate the gradient using backward mode AD as follows:
+
+```python
+function compute_gradient_reduced_memory(f, x_0):
+    # init
+    values <- array of size n
+    values[0] <- x_0
+
+    for i from 1 to n:
+        values[i] <- f[i](values[i-1])
+
+    last_grad <- 1
+    
+    # iterate from the end and calculate based on the previous value
+    for i from n-1 to 0:
+        curr_grad <- last_grad * f[i+1].derivative(values[i])
+        last_grad <- curr_grad
+
+    return last_grad
+```
+
+**The memory complexity is O(n), but we reduced the memory needed by half - from 2n to n**
+
+As we can see in the loop, the grdaients are calcluted in reverse mode, meaning we start from the left side
+and go right in the formula above. The need to save the values of the functions costs us O(n) memory, as opposed to the forward
+mode which only needs O(1) memory, since we can use the last value to calculate the current one. 
+Yet, we reduced the memory complexity by half, from 2n to n since we still kept at each iteration only the
+the last gradient computed, instead of all of them.
+
+
+2. Yes, these techniques can be generalized for arbitrary computational graphs, but up to a certain point.
+In the common case where each layer is composed of multiple nodes, we will need to save all the gradients
+of each node in the last layer at a time (instead of just one- in the case where each layer has width of 1)
+and regarding the values: in forward mode we will need to save value for each node in the last layer 
+(instead of just one) and in forward mode the values of all the nodes (instead of one for each layer).
+
+3. As we've said, using these techniques, we can reduce memory usage both using forward and backward mode AD.
+This is especially useful in deep architectures, where we have many layers, thus the need to save values
+only for the last layer can reduce the memory usage significantly.
+We may utilize this freed memory to improve the performance of the networks for example by adding layers or
+widening them by adding more nodes in each layer.
 """
 
 # ==============
@@ -200,40 +292,63 @@ def part3_optim_hp():
 
 part3_q1 = r"""
 **Your answer:**
+1. High optimization error, also known as the training error, is an error that occur when a model does
+not predict the training data well. This means that the model is not learning the patterns in the data
+effectively, which could be an indication of underfitting, of a too simplistic model, or of poor training
+in general, because the model failed to predict correctly even the data it was trained on.
 
+To reduce this error, we have several methods:
+* testing different optimization algorithms - for example, vanilla SGD,  momentum SGD, and RMSprop we've seen in class.
+* tweak the model's hyperparameters, such as learning rate, regularization, batch size, etc. This could
+be achieved by performing grid-search and cross-validation over the hyperparameters.
+* use a larger dataset - can also improve our training, espcially if we don't have enough data in the beginning
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+2. Generalization error is the difference between the population loss (the expected loss over the true data
+distribution) and the empirical loss (the average loss over the training or test dataset). Since we can't actually 
+compute this value, we estimate it by measuring the difference between the training loss and the test loss.
+High generalization error means that the model is not generalizing well, i.e. it is not able to predict well on
+unseen data, and can indicate overfitting of the model on the training set.
+
+In order to reduce generalization error, we can use techniques meant to reduce overfitting by reducing the 
+expressiveness of the model or adding regularization to it. For example, we can use dropout, L1 or L2 regularization,
+
+3. Approximation error is the difference between the population loss of the best possible model in the hypothesis
+ class and the population loss with our selected model. This error reflects how well the chosen hypothesis class can approximate the
+ true data distribution, and thus a high approximation error may indicate that the model class is not complex enough.
+
+Therefore, the way to reduce this error is to increase the complexity of the model, for example by adding more layers, 
+adding more neurons to each layer. Another way would be to increase each neuron's receptive field by adding convolutional
+layers, pooling layers or adding fully connected layers that will enhance the robustness of the model and improve its
+approximation capabilities, since each feature map can "learn" more about the data.
 
 """
 
 part3_q2 = r"""
 **Your answer:**
 
+The most typical case where a binary classifier will produce a high rate of false positives is in the case 
+where it returns a positive prediction for every sample. This will result in a false-postive for each of the
+samples that are actually negative, and thus a high rate of false positives.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
-
+Similarily, a binary classifier that classifies all samples as negative will have a high rate of false negatives.
 """
 
 part3_q3 = r"""
 **Your answer:**
 
+1. In this case, we'd prefer lower rates of false positive, in the cost of higher rate of false negatives,
+since in the case of false positive (i.e healthy person misclassified as sick), the cost of the tests is very
+high, despite the disease not being lethal, while in the case of false negative (i.e sick person misclassified 
+as healthy) the person will likely be diagnosed despite this prediction due to the appearance of the non-lethal symptoms.
+Therefore, in the ROC curve, we'd prefer to be higher on the curve, meaning we have higher precision, i.e less false
+positives, again because the diagnosis is expensive.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+
+2. In this case, we'd prefer lower rates of false negatives, even in the cost of higher rate of false positives, 
+since misclassifying a sick person as healthy puts their life at risk due to the fact that there are no apperant 
+symptoms, and the disease being lethal, while misclassifying a healthy person as sick only costs the tests.
+Therefore, in the ROC curve, we'd prefer to be lower on the curve, meaning we have higher recall, i.e less
+false negatives.
 
 """
 
@@ -241,13 +356,14 @@ An equation: $e^{i\pi} -1 = 0$
 part3_q4 = r"""
 **Your answer:**
 
-
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+MLP is not a good choice for processing sequential data, because it doesn't bring into account the order
+of the data or the connections between the different data points.
+Specifically, regarding a model that predicts the sentiment of a sentence, it will likely fail to predict
+it based on its predictions on each word separately, since it is crucial to consider each word in the context
+of the entire sentence.
+For example, a model that tries to average on the sentiment on ech word in order to provide prediction 
+for the entire sentence will likely predict that the sentence "I've had better days" is positive, since
+it has the word 'better', and it doesn't contain any negative words, while in fact, the sentence is negative.
 
 """
 # ==============
