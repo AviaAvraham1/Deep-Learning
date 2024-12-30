@@ -1,3 +1,4 @@
+from .layers import CrossEntropyLoss
 r"""
 Use this module to write your answers to the questions in the notebook.
 
@@ -42,7 +43,7 @@ For example, we learned in the Automatic Differentiation tutorial, that we can u
 Also, that way we will need to create a gardient function for each paramater, and recalculating it upon every change in the
 network, which is not very scalable.
 
---------------- are we sure we want it?????
+--------------- TODO : are we sure we want it?????
 There is also another option of using automatic differentiation in forward mode, which is different from backpropagation
 which is done in reverse mode. However this option is also not as efficient as backpropagation.
 
@@ -382,7 +383,10 @@ def part4_optim_hp():
     #    What you returns needs to be a callable, so either an instance of one of the
     #    Loss classes in torch.nn or one of the loss functions from torch.nn.functional.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    lr = 0.001
+    weight_decay = 0.001
+    momentum = 0.99
+    loss_fn = CrossEntropyLoss() # torch.nn.CrossEntropyLoss()
     # ========================
     return dict(lr=lr, weight_decay=weight_decay, momentum=momentum, loss_fn=loss_fn)
 
