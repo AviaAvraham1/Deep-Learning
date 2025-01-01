@@ -98,7 +98,7 @@ def cnn_experiment(
         raise ValueError(f"Unknown model type: {model_type}")
     model_cls = MODEL_TYPES[model_type]
 
-    # TODO: Train
+    # Train
     #  - Create model, loss, optimizer and trainer based on the parameters.
     #    Use the model you've implemented previously, cross entropy loss and
     #    any optimizer that you wish.
@@ -107,7 +107,19 @@ def cnn_experiment(
     #   for you automatically.
     fit_res = None
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    model = model_cls(hidden_dims=hidden_dims, channels=filters_per_layer * layers_per_block,
+                        pool_every=pool_every, in_size=ds_train[0][0].shape, out_classes=10,
+                        pooling_params={"kernel_size": 3}, conv_params={"kernel_size": 3, "padding":1},
+                         **kw) # initialize the cnn with the given paramters
+    model = model.to(device) # move the model to the gpu
+    loss_fn = torch.nn.CrossEntropyLoss() # they asked for cross entropy loss
+    loss_fn = loss_fn.to(device)
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=reg) # we chose the adam optimizer cause it's the best dah
+    dl_train = DataLoader(ds_train, batch_size=bs_train, shuffle=True)
+    dl_test = DataLoader(ds_test, batch_size=bs_test, shuffle=False)
+    classifier = ArgMaxClassifier(model) # apply the argmax to eventually get the class that gave the best score
+    trainer = ClassifierTrainer(classifier, loss_fn, optimizer, device=device) # final trainer object
+    fit_res = trainer.fit(dl_train=dl_train, dl_test=dl_test, num_epochs=epochs, checkpoints=checkpoints, early_stopping=early_stopping, print_every=0)
     # ========================
 
     save_experiment(run_name, out_dir, cfg, fit_res)
