@@ -43,10 +43,6 @@ For example, we learned in the Automatic Differentiation tutorial, that we can u
 Also, that way we will need to create a gardient function for each paramater, and recalculating it upon every change in the
 network, which is not very scalable.
 
---------------- TODO : are we sure we want it?????
-There is also another option of using automatic differentiation in forward mode, which is different from backpropagation
-which is done in reverse mode. However this option is also not as efficient as backpropagation.
-
 """
 
 
@@ -393,15 +389,43 @@ def part4_optim_hp():
 
 part4_q1 = r"""
 **Your answer:**
+(1) Let's calculate the number of parameters for each example, including bias:
+    (a) Regular: 
+        We have two 3x3 convulutions, each one is: 3x3x256x256 + 256 = 590,080
+        so a total of 2*590,080 = 1,180,160 ~ 1.18M parameters
+    
+    (b) Bottleneck:
+        We have a 1x1 convolution, a 3x3 convolution and another 1x1 convolution, overall we have:
+        1x1x256x64 + 64 = 16,384 + 64 = 16,448
+        3x3x64x64 + 64 = 36,864 + 64 = 36,928 
+        1x1x64x256 + 256 = 16,384 + 256 = 16,640
+        so overall we have a total of 16,448 + 36,928  + 16,640 = 70,016 ~ 70K parameters
+    
+    The bottleneck design uses about 17x fewer parameters.
 
+(2) Now we'll asses the number of FLOPs for each example:
+    In the regular block, we have two 3x3 convolutions operating on large 256-channel feature maps,
+    which results in very high amount of FLOPs due to the need to convolve these large 3x3 filters
+    across all 256 input and output channels twice.
+    However, in the bottleneck block, we start with a 1x1 projection from 256 to 64 channels, perform a
+    3x3 convolution on the smaller 64-channel space, and finally end with a 1x1 projection back up to 256 channels.
+    As we've seen in the previous question, the number of parameters in the bottleneck block is significantly
+    lower than in the regular block, making it much more efficent also in terms of FLOPs.
+    Overall, since the bottleneck design uses dimensionality reduction before making the 3x3 convolution to reduce
+    computational cost while maintaining model expressiveness, it is more efficient in terms of the number of
+    floating point operations compared to the regular block which doesn't have this dimension reduction.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
-
+(3) In terms of ability to combine the input:
+    (1) Spatially (i.e within the feature-map):
+        In the regular case we have two 3x3 convolutions, which actually results in a 5x5 convolution,
+        which can capture more spatial information in the feature map compared to each one of the bottleneck case 
+        in which we only have a 3x3 convolution in total.
+    (2) Across feature maps:
+        Even though both examples have some ability to combine the input across feature maps, since in both cases
+        output feature map is a linear combination of all input feature maps in the kernel window, the regular case
+        architecture maintains the number of feature-maps across layers, while the bottleneck case reduces the
+        number of feature maps in the bottleneck layer which can limit the ability to combine the input across
+        feature maps due to the information loss.
 """
 
 # ==============
@@ -411,16 +435,16 @@ An equation: $e^{i\pi} -1 = 0$
 
 
 part5_q1 = r"""
-**Your answer:**
-
-
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
-
+(1) The model didn't detect most of the objects correctly, and also most of the detections were given with low confidence.
+    In the first picture, it both misclassified the upper dolphin and failed to draw the rectangle around the two 
+    lower dolphines correctly (identified them as one person + surfboard).
+    In the second image it failed to detect the cat as an object, and it also predicted 2 out of the 3 dogs as cats, with only one dog identified correctly.
+    It only predicted with confidence higher than 0.65 the lower two-dolphins wrongly as person with 0.9 confidence.
+(2) In the first image the model didn't recognize the dolphin, which means it might not have seen enough dolphines in the
+    training set, so to resolve the issue we can add more dolphines to the training set, same deal with the dogs.
+    Another issue the model has was to seperate overlapping objects (both with the dolphins and the dogs&cats), so to
+    resolve this issue we can add more cluttered images with overlapping objects to the training set. Also, we can try training the 
+    model on smaller segments of the image and allow the model to focus on the objects separately while training.
 """
 
 part5_q2 = r"""
