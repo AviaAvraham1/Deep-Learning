@@ -84,15 +84,14 @@ class Trainer(abc.ABC):
             #  - Save losses and accuracies in the lists above.
             # ====== YOUR CODE: ======
             kw["verbose"] = verbose
-        
             epoch_train_result = self.train_epoch(dl_train, **kw)
             train_acc.append(epoch_train_result.accuracy)
-            losses_without_grad = [float(x.detach().item()) for x in epoch_train_result.losses]
-            train_loss += losses_without_grad
-
+            epoch_train_loss = sum(epoch_train_result.losses) / len(epoch_train_result.losses)
+            train_loss.append(epoch_train_loss.item())
             epoch_test_result = self.test_epoch(dl_test, **kw)
             test_acc.append(epoch_test_result.accuracy)
-            test_loss += [float(x.detach().item()) for x in epoch_test_result.losses]
+            epoch_test_loss = sum(epoch_test_result.losses) / len(epoch_test_result.losses)
+            test_loss.append(epoch_test_loss.item())
             # ========================
 
             #  - Optional: Implement early stopping. This is a very useful and
