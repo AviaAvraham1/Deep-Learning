@@ -194,7 +194,7 @@ class ResidualBlock(nn.Module):
 
         self.main_path, self.shortcut_path = None, None
 
-        # TODO: Implement a generic residual block.
+        # Implement a generic residual block.
         #  Use the given arguments to create two nn.Sequentials:
         #  - main_path, which should contain the convolution, dropout,
         #    batchnorm, relu sequences (in this order).
@@ -224,7 +224,7 @@ class ResidualBlock(nn.Module):
                 )
             )
             if dropout > 0:
-                layers.append(nn.Dropout2d(dropout)) # TODO: Do we need to use our implemented dropout? doesnt seem to be working tho
+                layers.append(nn.Dropout2d(dropout))
             if batchnorm:
                 layers.append(nn.BatchNorm2d(out_channels))
             layers.append(activation)
@@ -300,7 +300,6 @@ class ResidualBottleneckBlock(ResidualBlock):
         assert len(inner_channels) > 0
         assert len(inner_channels) == len(inner_kernel_sizes)
 
-        # TODO:
         #  Initialize the base class in the right way to produce the bottleneck block
         #  architecture.
         # ====== YOUR CODE: ======

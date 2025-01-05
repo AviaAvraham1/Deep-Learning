@@ -94,7 +94,6 @@ class ArgMaxClassifier(Classifier):
     """
 
     def _classify(self, y_proba: Tensor):
-        # TODO:
         #  Classify each sample to one of C classes based on the highest score.
         #  Output should be a (N,) integer tensor.
         # ====== YOUR CODE: ======
@@ -126,7 +125,6 @@ class BinaryClassifier(Classifier):
         self.positive_class = positive_class
 
     def _classify(self, y_proba: Tensor):
-        # TODO:
         #  Classify each sample class 1 if the probability of the positive class is
         #  greater or equal to the threshold.
         #  Output should be a (N,) integer tensor.
@@ -172,7 +170,6 @@ def plot_decision_boundary_2d(
         cmap=cmap,
     )
 
-    # TODO:
     #  Construct the decision boundary.
     #  Use torch.meshgrid() to create the grid (x1_grid, x2_grid) with step dx on which
     #  you evaluate the classifier.
@@ -206,7 +203,6 @@ def select_roc_thresh(
         created.
     """
 
-    # TODO:
     #  Calculate the optimal classification threshold using ROC analysis.
     #  You can use sklearn's roc_curve() which returns the (fpr, tpr, thresh) values.
     #  Calculate the index of the optimal threshold as optimal_thresh_idx.

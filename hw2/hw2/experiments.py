@@ -33,7 +33,6 @@ def mlp_experiment(
     dl_test: DataLoader,
     n_epochs: int,
 ):
-    # TODO:
     #  - Create a BinaryClassifier model.
     #  - Train using our ClassifierTrainer for n_epochs, while validating on the
     #    validation set.
