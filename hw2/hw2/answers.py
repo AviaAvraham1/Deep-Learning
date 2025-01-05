@@ -258,7 +258,7 @@ def part3_arch_hp():
     hidden_dims = 0  # number of output dimensions for each hidden layer
     activation = "none"  # activation function to apply after each hidden layer
     out_activation = "none"  # activation function to apply at the output layer
-    # TODO: Tweak the MLP architecture hyperparameters.
+    # Tweak the MLP architecture hyperparameters.
     # ====== YOUR CODE: ======
     raise NotImplementedError()
     # ========================
@@ -276,7 +276,6 @@ def part3_optim_hp():
 
     loss_fn = None  # One of the torch.nn losses
     lr, weight_decay, momentum = 0, 0, 0  # Arguments for SGD optimizer
-    # TODO:
     #  - Tweak the Optimizer hyperparameters.
     #  - Choose the appropriate loss function for your architecture.
     #    What you returns needs to be a callable, so either an instance of one of the
@@ -373,7 +372,6 @@ def part4_optim_hp():
 
     loss_fn = None  # One of the torch.nn losses
     lr, weight_decay, momentum = 0, 0, 0  # Arguments for SGD optimizer
-    # TODO:
     #  - Tweak the Optimizer hyperparameters.
     #  - Choose the appropriate loss function for your architecture.
     #    What you returns needs to be a callable, so either an instance of one of the
@@ -435,57 +433,72 @@ part4_q1 = r"""
 
 
 part5_q1 = r"""
-(1) The model didn't detect most of the objects correctly, and also most of the detections were given with low confidence.
-    In the first picture, it both misclassified the upper dolphin and failed to draw the rectangle around the two 
-    lower dolphines correctly (identified them as one person + surfboard).
-    In the second image it failed to detect the cat as an object, and it also predicted 2 out of the 3 dogs as cats, with only one dog identified correctly.
-    It only predicted with confidence higher than 0.65 the lower two-dolphins wrongly as person with 0.9 confidence.
-(2) In the first image the model didn't recognize the dolphin, which means it might not have seen enough dolphines in the
-    training set, so to resolve the issue we can add more dolphines to the training set, same deal with the dogs.
-    Another issue the model has was to seperate overlapping objects (both with the dolphins and the dogs&cats), so to
-    resolve this issue we can add more cluttered images with overlapping objects to the training set. Also, we can try training the 
-    model on smaller segments of the image and allow the model to focus on the objects separately while training.
+**Your answer:**
+(1) As observed from the graphs, increasing the depth of the network generally improves the
+    accuracy, but only up to a certain point. For example we can observe that for both examined
+    values of K, the network performed better for L=4 compared to when L=2, but when L=8 it 
+    performed worse and for L=16 the result was a non-trainable network.
+(2) As mentioned, for L=16, the network was not trainable. It could have happened because
+    gradients have vanished or exploded along the way or because there wasn't enough training data.
+    As a solution, we can try to using different architecture, such a ResNet which is supposed to
+    be easier to train as we've learened (by using the original input later in the network).
+    Also, we can use techniques like batch normailzation which is also meant to make the training
+    easier by reducing the variance and preserving the original disribution in each layer.
+
 """
 
 part5_q2 = r"""
 **Your answer:**
+In experiment 1.2 we've varied the number of filters per layer (K) over the network depth (L) - different Ks for same L
+For L=2 we see an improvment the more we increase K, both on the train and test set, and both with less loss and higher accuracy
+For L=4 we see a similar pattern, but this time K=64 and K=128 are very similar and often overlap
+For L=8 we also see a steady decrease for K=32 and K=128, but we end up on higher loss on the test set compared to the others
 
+The depth that produced the best results is L=4, where K=64 and K=128 behaved similarily. However, for L=8 we've seen the worst results.
+This is likely because L=4 with K=64/128 we've reached a good balance between accuracy and trainability.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+However, the deeper network (L8) provided worse results with K=32 and K=128, and wasn't trainable with K=64 filters. 
+This points at issues like vanishing gradients. Methods like gradient clipping or residual connections might help improve this.
+Also, since the loss is lower on the test set, this might indicate an overfit due to the depth of the network.
 
 """
 
 part5_q3 = r"""
-**Your answer:**
-
-
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+We can observe that all tested values of L produced trainable networks. Also, the network
+seemed to perform better as the value of L was smaller (with L=2 and L=3 performing very similarly).
+If we compare these result with those of experiment 1.2, we can also observe that with 
+by varying the number of filters, we were able to achieve better results (lower loss rates, 
+higher accuracy rates).
+To stabilize and improve training, we may use techniques like batch-normalization and residual connections.
 
 """
 
 part5_q4 = r"""
 **Your answer:**
+In 1.4, in general, the network performed better with lower depth, probably since it was easier
+to train. Also, if we examine L=8, which apears in both parts of the experiment, we can notice
+it actually performed a lot better with less filters.
 
-
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+Compared to similar configurations we run with regular CNN (in 1.1, 1.3) we may say that
+ResNet significantly outperformed regular CNN (for example it was able to train with L=16
+(and K=32) and also got higher accuracy for L=8 (and K=32)). As we have learned, it makes
+sense since ResNet is likely to perform better due to its easier training process.
 
 """
 
+# no question but just in case it's needed seperately
+part5_q5 = r"""
+**Your answer:**
+In 1.4, in general, the network performed better with lower depth, probably since it was easier
+to train. Also, if we examine L=8, which apears in both parts of the experiment, we can notice
+it actually performed a lot better with less filters.
+
+Compared to similar configurations we run with regular CNN (in 1.1, 1.3) we may say that
+ResNet significantly outperformed regular CNN (for example it was able to train with L=16
+(and K=32) and also got higher accuracy for L=8 (and K=32)). As we have learned, it makes
+sense since ResNet is likely to perform better due to its easier training process.
+
+"""
 
 # ==============
 
@@ -496,14 +509,17 @@ An equation: $e^{i\pi} -1 = 0$
 part6_q1 = r"""
 **Your answer:**
 
+(1) The model didn't detect most of the objects correctly, and also most of the detections were given with low confidence.
+    In the first picture, it both misclassified the upper dolphin and failed to draw the rectangle around the two 
+    lower dolphines correctly (identified them as one person + surfboard).
+    In the second image it failed to detect the cat as an object, and it also predicted 2 out of the 3 dogs as cats, with only one dog identified correctly.
+    It only predicted with confidence higher than 0.65 the lower two-dolphins wrongly as person with 0.9 confidence.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
-
+(2) In the first image the model didn't recognize the dolphin, which means it might not have seen enough dolphines in the
+    training set, so to resolve the issue we can add more dolphines to the training set, same deal with the dogs.
+    Another issue the model has was to seperate overlapping objects (both with the dolphins and the dogs&cats), so to
+    resolve this issue we can add more cluttered images with overlapping objects to the training set. Also, we can try training the 
+    model on smaller segments of the image and allow the model to focus on the objects separately while training.
 """
 
 
@@ -523,26 +539,21 @@ An equation: $e^{i\pi} -1 = 0$
 
 part6_q3 = r"""
 **Your answer:**
+Our first image of the bottle (flipped) was misclassified as a cup, we estimate this has happened because mostly cups look similar - 
+a solid bottom, and the rest transparent, bottles are mostly the other way around, with the cap at the top being solid
 
+In our second image (plant) the bottle was misclassified as a vase, we believe it's because of the bottom with the label which makes
+the bottom part of the bottle look solid, as well as the plant obstructing parts of the bottle, and being in a similar color as the cap
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
-
+In our third image (dark) the bottle was not classified at all, the image was appreantly too dark
 """
 
 part6_bonus = r"""
 **Your answer:**
+In the first image (flipped) we flipped upside-down the image, it fixed the issue we had earlier and the cap was on above the bottle
+this time
 
+In the second image (plant) we focused the subject of our image, the bottle, now the plant in the background didn't stop us from identifying it.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
-
+In the third image (dark) we simply brightened the image, this time we managed to identify the bottle
 """
