@@ -102,8 +102,18 @@ class Trainer(abc.ABC):
             test_acc.append(epoch_test_result.accuracy)
             epoch_test_loss = sum(epoch_test_result.losses) / len(epoch_test_result.losses)
             test_loss.append(epoch_test_loss)
+            
+            # implement early stopping and save checkpoint
+            if best_acc is None or epoch_test_result.accuracy > best_acc:
+                best_acc = epoch_test_result.accuracy
+                save_checkpoint = True
+                epochs_without_improvement = 0
+            else:
+                epochs_without_improvement+=1
+                if early_stopping is not None and epochs_without_improvement >= early_stopping:
+                    break
             # ========================
-
+                
             # Save model checkpoint if requested
             if save_checkpoint and checkpoint_filename is not None:
                 saved_state = dict(

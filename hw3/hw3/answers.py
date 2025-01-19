@@ -27,8 +27,8 @@ def part1_rnn_hyperparams():
 
 
 def part1_generation_params():
-    start_seq = ""
-    temperature = 0.0001
+    start_seq = "ACT I. SCENE 1."
+    temperature = 0.01
     # Tweak the parameters to generate a literary masterpiece.
     # ====== YOUR CODE: ======
     # ========================
