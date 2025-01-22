@@ -313,11 +313,20 @@ class RNNTrainer(Trainer):
 class VAETrainer(Trainer):
     def train_batch(self, batch) -> BatchResult:
         x, _ = batch
-        x = x.to(self.device)  # Image batch (N,C,H,W)
-        # TODO: Train a VAE on one batch.
-        # ====== YOUR CODE: ======
-        raise NotImplementedError()
-        # ========================
+        x = x.to(self.device)
+
+        recon_x, mu, log_var = self.model(x)
+
+        data_loss = torch.nn.functional.mse_loss(recon_x, x, reduction='sum')
+
+        kl_div = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp())
+
+        loss = data_loss + kl_div
+
+        # Backpropagation
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
 
         return BatchResult(loss.item(), 1 / data_loss.item())
 
@@ -326,10 +335,13 @@ class VAETrainer(Trainer):
         x = x.to(self.device)  # Image batch (N,C,H,W)
 
         with torch.no_grad():
-            # TODO: Evaluate a VAE on one batch.
-            # ====== YOUR CODE: ======
-            raise NotImplementedError()    
-            # ========================
+            recon_x, mu, log_var = self.model(x)
+
+            data_loss = torch.nn.functional.mse_loss(recon_x, x, reduction='sum')
+
+            kl_div = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp())
+
+            loss = data_loss + kl_div
 
         return BatchResult(loss.item(), 1 / data_loss.item())
 
