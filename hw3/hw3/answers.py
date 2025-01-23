@@ -130,7 +130,28 @@ def part3_gan_hyperparams():
     )
     # TODO: Tweak the hyperparameters to generate a former president.
     # ====== YOUR CODE: ======
+    hypers = dict(
+        batch_size=64,  # Batch size for training
+        h_dim=128,      # Hidden dimension for generator/discriminator
+        z_dim=100,      # Latent dimension for noise vector
+        x_sigma2=1.0,   # Data variance (assuming normalized images)
+        learn_rate=2e-4,  # Learning rate for Adam optimizer
+        betas=(0.5, 0.999),  # Betas for Adam optimizer (momentum parameters)
+    )
 
+    # TODO: UNDERSTAND IF WE SHOULD LEAVE IT AS IT IS
+    hypers["discriminator_optimizer"] = {
+    'type':'Adam',
+    'lr':0.0002,
+    'betas':(0.5, 0.999)
+    }
+    hypers["generator_optimizer"] = {
+        'type':'Adam',
+        'lr':0.0002,
+        'betas':(0.5, 0.999)
+    }
+    hypers["data_label"] = 0
+    hypers["label_noise"] = 0.15
     # ========================
     return hypers
 
@@ -155,7 +176,7 @@ part3_q3 = r"""
 
 
 
-PART3_CUSTOM_DATA_URL = None
+PART3_CUSTOM_DATA_URL = "https://github.com/AviaAvraham1/TempDatasets/raw/refs/heads/main/George_W_Bush2.zip"
 
 
 def part4_transformer_encoder_hyperparams():
