@@ -356,14 +356,22 @@ class TransformerEncoderTrainer(Trainer):
         
         loss = None
         num_correct = None
-        # TODO:
         #  fill out the training loop.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        # forward pass (produce output)
+        outputs = self.model(input_ids, attention_mask) 
+
+        # compute loss
+        self.optimizer.zero_grad()
+        loss = self.loss_fn(outputs, label)
+
+        #backward pass
+        loss.backward()
+        self.optimizer.step()
+
+        # compute number of correct predictions
+        num_correct = (torch.round(torch.sigmoid(outputs)) == label).sum()
         # ========================
-        
-        
-        
         return BatchResult(loss.item(), num_correct.item())
         
     def test_batch(self, batch) -> BatchResult:
@@ -375,14 +383,12 @@ class TransformerEncoderTrainer(Trainer):
             loss = None
             num_correct = None
             
-            # TODO:
             #  fill out the testing loop.
             # ====== YOUR CODE: ======
-            raise NotImplementedError()
+            outputs = self.model(input_ids, attention_mask) 
+            loss = self.loss_fn(outputs, label)
+            num_correct = (torch.round(torch.sigmoid(outputs)) == label).sum()
             # ========================
-
-            
-        
         return BatchResult(loss.item(), num_correct.item())
 
 
