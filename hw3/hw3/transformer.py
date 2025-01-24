@@ -37,9 +37,52 @@ def sliding_window_attention(q, k, v, window_size, padding_mask=None):
     ## Think how you can obtain the indices corresponding to the entries in the sliding windows using tensor operations (without loops),
     ## and then use these indices to compute the dot products directly.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
-    # ========================
 
+    #check if the input tensors have heads. if not, add a head dimension and track to undo later
+    reshaped = False
+    if len(q.shape) == 3: 
+        q = q.reshape(batch_size, 1, seq_len, embed_dim)
+        k = k.reshape(batch_size, 1, seq_len, embed_dim)
+        v = v.reshape(batch_size, 1, seq_len, embed_dim)
+        reshaped = True
+        
+    heads_dim = q.shape[1]  # number of attention heads
+    device = q.device
+    
+    # initialize the attention matrix with -inf
+    B = torch.tensor([float("-inf")], device=device).repeat(batch_size, heads_dim, seq_len, seq_len)
+    
+    row_indices = torch.arange(seq_len).repeat(seq_len, 1)  # shaped [seq_len, seq_len] and each row is [0, 1, 2, ..., seq_len-1]
+    column_indices = row_indices.t()  # same but transposed
+    
+    # this created a matrix where the is True if the index is within the window
+    window_range = window_size // 2
+    mask = (row_indices >= (column_indices - window_range)) & (row_indices <= (column_indices + window_range))
+
+    # use the mask to get the indices of the elements within the window
+    row_indices = row_indices[mask]
+    column_indices = column_indices[mask]
+    
+    # now actually compute attention scores within the window
+    B[:, :, row_indices, column_indices] = torch.sum(q[:, :, row_indices, :] * k[:, :, column_indices, :], -1)
+    
+    # apply the padding mask if needed
+    if padding_mask is not None:
+        cols_padding = padding_mask.unsqueeze(1).unsqueeze(2)  # [B, 1, 1, seq_len]
+        rows_padding = padding_mask.unsqueeze(1).unsqueeze(3)  # [B, 1, seq_len, 1]
+        full_padding = torch.min(cols_padding, rows_padding) * torch.ones((1, heads_dim, 1, 1), device=device)
+        B = torch.where(full_padding != 1, torch.tensor(float("-inf"), dtype=torch.float, device=device), B)
+        
+    # scale and normalize the attention scores
+    B = B / (embed_dim ** 0.5)  # sqrt(d_k) scaling
+    A = torch.softmax(B, -1)  # apply softmax create A
+    A = torch.nan_to_num(A, 0)  # replace any NaNs with 0s
+    Y = torch.matmul(A, v) # apply attention weights to values
+    
+    # if the input was reshaped, undo to return the original dimensions (also rename to the expected names)
+    attention = A.reshape(batch_size, seq_len, seq_len) if reshaped else A
+    values = Y.reshape(batch_size, seq_len, embed_dim) if reshaped else Y
+    # ========================
 
     return values, attention
 
@@ -81,10 +124,10 @@ class MultiHeadAttention(nn.Module):
         q, k, v = qkv.chunk(3, dim=-1) #[Batch, Head, SeqLen, Dims]
         
         # Determine value outputs
-        # TODO:
+
         # call the sliding window attention function you implemented
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        values, attention = sliding_window_attention(q, k, v, self.window_size, padding_mask)
         # ========================
 
         values = values.permute(0, 2, 1, 3) # [Batch, SeqLen, Head, Dims]
@@ -147,7 +190,7 @@ class EncoderLayer(nn.Module):
         :param dropout: the dropout probability
         '''
         super(EncoderLayer, self).__init__()
-        self.self_attn = MultiHeadAttention(embed_dim, embed_dim, num_heads, window_size)
+        self.self_attn = MultiHeadAttention(embed_dim, embed_dim, num_heads, window_size) 
         self.feed_forward = PositionWiseFeedForward(embed_dim, hidden_dim)
         self.norm1 = nn.LayerNorm(embed_dim)
         self.norm2 = nn.LayerNorm(embed_dim)
@@ -159,14 +202,22 @@ class EncoderLayer(nn.Module):
         :param padding_mask: the padding mask of shape [Batch, SeqLen]
         :return: the output of the layer of shape [Batch, SeqLen, Dims]
         '''
-        # TODO:
         #   To implement the encoder layer, do the following:
         #   1) Apply attention to the input x, and then apply dropout.
         #   2) Add a residual connection from the original input and normalize.
         #   3) Apply a feed-forward layer to the output of step 2, and then apply dropout again.
         #   4) Add a second residual connection and normalize again.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        
+        attn_output = self.self_attn(x, padding_mask)  # apply self-attention on the input (calls forward of MultiHeadAttention class)
+        attn_output = self.dropout(attn_output)
+
+        x = self.norm1(x + attn_output) # residual + normalization
+
+        ff_output = self.feed_forward(x) # feed-forward layer
+        ff_output = self.dropout(ff_output) # apply dropout again
+
+        x = self.norm2(x + ff_output) # second residual connection + normalization
         # ========================
         
         return x
@@ -216,8 +267,22 @@ class Encoder(nn.Module):
         #  5) Apply the classification MLP to the output vector corresponding to the special token [CLS] 
         #     (always the first token) to receive the logits.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
-        
+        # Step 1: Embed the input tokens
+        x = self.encoder_embedding(sentence)  # Shape: [Batch, max_seq_len, embed_dim]
+
+        # Step 2: Add positional encoding
+        x = self.positional_encoding(x)  # Shape: [Batch, max_seq_len, embed_dim]
+
+        # Step 3: Apply dropout
+        x = self.dropout(x)
+
+        # Step 4: Process through each encoder layer
+        for layer in self.encoder_layers:
+            x = layer(x, padding_mask)  # Each layer processes x with the padding mask
+
+        # Step 5: Use the [CLS] token's embedding for classification
+        cls_token = x[:, 0, :]  # Extract the embedding of the first token
+        output = self.classification_mlp(cls_token).squeeze(-1)  # Produce logits
         # ========================
         
         
