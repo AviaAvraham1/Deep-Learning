@@ -128,7 +128,7 @@ def part3_gan_hyperparams():
     hypers = dict(
         batch_size=0, h_dim=0, z_dim=0, x_sigma2=0, learn_rate=0.0, betas=(0.0, 0.0),
     )
-    # TODO: Tweak the hyperparameters to generate a former president.
+    # Tweak the hyperparameters to generate a former president.
     # ====== YOUR CODE: ======
     hypers = dict(
         batch_size=64,  # Batch size for training
@@ -181,13 +181,13 @@ PART3_CUSTOM_DATA_URL = "https://github.com/AviaAvraham1/TempDatasets/raw/refs/h
 
 def part4_transformer_encoder_hyperparams():
     hypers = dict(
-        embed_dim=128,    
-        num_heads=8,
-        num_layers=6,
-        hidden_dim=512,
-        window_size=8,
-        droupout=0.1,
-        lr=3e-4,
+        embed_dim=128,       # Reduced to stabilize early training
+        num_heads=4,         # Ensure embed_dim % num_heads == 0
+        num_layers=4,        # Fewer layers for easier optimization
+        hidden_dim=512,      # Adjusted to balance capacity
+        window_size=8,       # Moderate sliding window size
+        droupout=0.05,       # Low dropout to focus on learning
+        lr=3e-5,             # Lower learning rate for stability
     )
 
     # Tweak the hyperparameters to train the transformer encoder.
@@ -199,44 +199,55 @@ def part4_transformer_encoder_hyperparams():
 
 
 
-part3_q1 = r"""
-**Your answer:**
-
-"""
-
-part3_q2 = r"""
-**Your answer:**
-
-
-"""
-
-
 part4_q1 = r"""
 **Your answer:**
-
-
+When stacking encoder layers that use the sliding-window attention, the final layer has a broader context due to the 
+receptive field expansion with each layer.
+For example, when window size is 2, in the first layer, each token attends to itself and one token to the left and right.
+But in the second layer, the representation of each token already incorporates information from its immediate neighbors,
+so if each token in the first layer attends to 3 tokens and the second layer allows a token to indirectly attend to neighbors
+of its neighbors, it's effectively covering a window of up to 5 tokens. And so on until the final layer, which has the 
+widest context.
 """
 
 part4_q2 = r"""
 **Your answer:**
-
+We suggest a slight modification to the sliding window attention mechanism that intends to make the context more global:
+we still define a window size, but instead of simply attending to the tokens within the window, we also define a stride parameter, 
+which determines the number of tokens to skip between each token in the window. The number of tokens to attend to will still be
+limited by the window size (hence the complexity remains O(nw)), but the stride will allow the model to attend to tokens that are
+further apart from each other, and thus increase the global context of the attention mechanism. Also, since the stride remains
+constant, it will allow coverage of the entire sequence over all tokens.
 
 """
 
 
-part4_q3= r"""
+part5_q1 = r"""
 **Your answer:**
 
 
 """
 
-part4_q4 = r"""
+part5_q2 = r"""
 **Your answer:**
 
 
 """
 
-part4_q5 = r"""
+
+part5_q3= r"""
+**Your answer:**
+
+
+"""
+
+part5_q4 = r"""
+**Your answer:**
+
+
+"""
+
+part5_q5 = r"""
 **Your answer:**
 
 

@@ -269,7 +269,7 @@ class RNNTrainer(Trainer):
         outputs, self.hidden_state = self.model(x, self.hidden_state)
         self.hidden_state = self.hidden_state.detach()
         self.hidden_state.require_grad = True
-
+        
         # compute loss
         self.optimizer.zero_grad()
         loss = self.loss_fn(outputs.view(-1, outputs.size(-1)), y.view(-1))  # Flatten for loss
@@ -360,7 +360,7 @@ class TransformerEncoderTrainer(Trainer):
         # ====== YOUR CODE: ======
         # forward pass (produce output)
         outputs = self.model(input_ids, attention_mask) 
-
+        outputs = outputs.view(-1)
         # compute loss
         self.optimizer.zero_grad()
         loss = self.loss_fn(outputs, label)
@@ -386,6 +386,7 @@ class TransformerEncoderTrainer(Trainer):
             #  fill out the testing loop.
             # ====== YOUR CODE: ======
             outputs = self.model(input_ids, attention_mask) 
+            outputs = outputs.view(-1)
             loss = self.loss_fn(outputs, label)
             num_correct = (torch.round(torch.sigmoid(outputs)) == label).sum()
             # ========================
@@ -400,12 +401,23 @@ class FineTuningTrainer(Trainer):
         input_ids = batch["input_ids"].to(self.device)
         attention_masks = batch["attention_mask"]
         labels= batch["label"]
-        # TODO:
         #  fill out the training loop.
         # ====== YOUR CODE: ======
+        # forward pass
+        self.optimizer.zero_grad()
+        outputs = self.model(input_ids, attention_mask=attention_masks, labels=labels)
 
-        raise NotImplementedError()
+        # compute loss
+        loss = outputs.loss
+        logits = outputs.logits
         
+        # backward pass
+        loss.backward()
+        self.optimizer.step()
+        
+        # compute number of correct predictions
+        predictions = logits.argmax(dim=1)
+        num_correct = (predictions == labels).sum().item()
         # ========================
         
         return BatchResult(loss, num_correct)
@@ -417,9 +429,13 @@ class FineTuningTrainer(Trainer):
         labels= batch["label"]
         
         with torch.no_grad():
-            # TODO:
             #  fill out the training loop.
             # ====== YOUR CODE: ======
-            raise NotImplementedError()
+            # same as in train_batch but without the backward pass
+            outputs = self.model(input_ids, attention_mask=attention_masks, labels=labels)
+            loss = outputs.loss
+            logits = outputs.logits
+            predictions = logits.argmax(dim=1)
+            num_correct = (predictions == labels).sum().item()
             # ========================
         return BatchResult(loss, num_correct)
