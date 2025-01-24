@@ -181,13 +181,13 @@ PART3_CUSTOM_DATA_URL = "https://github.com/AviaAvraham1/TempDatasets/raw/refs/h
 
 def part4_transformer_encoder_hyperparams():
     hypers = dict(
-        embed_dim=128,       # Reduced to stabilize early training
-        num_heads=4,         # Ensure embed_dim % num_heads == 0
-        num_layers=4,        # Fewer layers for easier optimization
-        hidden_dim=512,      # Adjusted to balance capacity
-        window_size=8,       # Moderate sliding window size
-        droupout=0.05,       # Low dropout to focus on learning
-        lr=3e-5,             # Lower learning rate for stability
+        embed_dim=256,
+        num_heads=4, 
+        num_layers=6,
+        hidden_dim=512,
+        window_size=32,
+        droupout=0.1,
+        lr=1e-4
     )
 
     # Tweak the hyperparameters to train the transformer encoder.
