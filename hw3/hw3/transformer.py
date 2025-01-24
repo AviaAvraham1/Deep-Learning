@@ -258,7 +258,6 @@ class Encoder(nn.Module):
         '''
         output = None
 
-        # TODO:
         #  Implement the forward pass of the encoder.
         #  1) Apply the embedding layer to the input.
         #  2) Apply positional encoding to the output of step 1.
@@ -267,22 +266,14 @@ class Encoder(nn.Module):
         #  5) Apply the classification MLP to the output vector corresponding to the special token [CLS] 
         #     (always the first token) to receive the logits.
         # ====== YOUR CODE: ======
-        # Step 1: Embed the input tokens
-        x = self.encoder_embedding(sentence)  # Shape: [Batch, max_seq_len, embed_dim]
-
-        # Step 2: Add positional encoding
-        x = self.positional_encoding(x)  # Shape: [Batch, max_seq_len, embed_dim]
-
-        # Step 3: Apply dropout
+        x = self.encoder_embedding(sentence)  # embed input tokens
+        x = self.positional_encoding(x)  #add positional encoding
         x = self.dropout(x)
-
-        # Step 4: Process through each encoder layer
         for layer in self.encoder_layers:
-            x = layer(x, padding_mask)  # Each layer processes x with the padding mask
-
-        # Step 5: Use the [CLS] token's embedding for classification
-        cls_token = x[:, 0, :]  # Extract the embedding of the first token
-        output = self.classification_mlp(cls_token).squeeze(-1)  # Produce logits
+            x = layer(x, padding_mask)  # each layer processes x with the padding mask
+        cls_token = x[:, 0, :]  # extract the embedding of the CLS (first) token
+        logits = self.classification_mlp(cls_token)  # apply the classification MLP on this embedding
+        output = logits
         # ========================
         
         
