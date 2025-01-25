@@ -80,6 +80,7 @@ class Trainer(abc.ABC):
                 self.model.load_state_dict(saved_state["model_state"])
 
         for epoch in range(num_epochs):
+            actual_num_epochs += 1
             save_checkpoint = False
             verbose = False  # pass this to train/test_epoch.
             if epoch % print_every == 0 or epoch == num_epochs - 1:
@@ -96,11 +97,16 @@ class Trainer(abc.ABC):
             kw["verbose"] = verbose
             epoch_train_result = self.train_epoch(dl_train, **kw)
             train_acc.append(epoch_train_result.accuracy)
-            epoch_train_loss = sum(epoch_train_result.losses) / len(epoch_train_result.losses)
-            train_loss.append(epoch_train_loss)
+            # epoch_train_loss = sum(epoch_train_result.losses) / len(epoch_train_result.losses)
+            # train_loss.append(epoch_train_loss)
             epoch_test_result = self.test_epoch(dl_test, **kw)
             test_acc.append(epoch_test_result.accuracy)
-            epoch_test_loss = sum(epoch_test_result.losses) / len(epoch_test_result.losses)
+            # epoch_test_loss = sum(epoch_test_result.losses) / len(epoch_test_result.losses)
+            # test_loss.append(epoch_test_loss)
+            epoch_train_loss = sum([loss.item() for loss in epoch_train_result.losses]) / len(epoch_train_result.losses)
+            train_loss.append(epoch_train_loss)
+
+            epoch_test_loss = sum([loss.item() for loss in epoch_test_result.losses]) / len(epoch_test_result.losses)
             test_loss.append(epoch_test_loss)
             
             # implement early stopping and save checkpoint
