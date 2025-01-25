@@ -360,7 +360,7 @@ class TransformerEncoderTrainer(Trainer):
         # ====== YOUR CODE: ======
         # forward pass (produce output)
         outputs = self.model(input_ids, attention_mask) 
-        outputs = outputs.view(-1)
+        # outputs = outputs.view(-1)
         # compute loss
         self.optimizer.zero_grad()
         loss = self.loss_fn(outputs, label)
@@ -386,7 +386,7 @@ class TransformerEncoderTrainer(Trainer):
             #  fill out the testing loop.
             # ====== YOUR CODE: ======
             outputs = self.model(input_ids, attention_mask) 
-            outputs = outputs.view(-1)
+            # outputs = outputs.view(-1)
             loss = self.loss_fn(outputs, label)
             num_correct = (torch.round(torch.sigmoid(outputs)) == label).sum()
             # ========================
