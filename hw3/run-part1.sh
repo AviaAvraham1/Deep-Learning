@@ -8,7 +8,7 @@ conda activate cs236781-hw
 echo "hello from $(python --version) in $(which python)"
 
 # Run the training script
-TRAIN_SCRIPT="Part1_Sequence.py"
+TRAIN_SCRIPT="Part4_Transformer.py"
 python "$TRAIN_SCRIPT"
 
 # Check if the script ran successfully

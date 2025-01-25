@@ -190,8 +190,8 @@ import re
 
 import matplotlib.pyplot as plt
 
-get_ipython().run_line_magic('load_ext', 'autoreload')
-get_ipython().run_line_magic('autoreload', '2')
+# get_ipython().run_line_magic('load_ext', 'autoreload')
+# get_ipython().run_line_magic('autoreload', '2')
 
 
 # In[5]:
@@ -471,7 +471,7 @@ test.assertTrue(torch.allclose(out, y, atol=1e-6), 'output of encoder layer is i
 # 
 # **TODO**: choose the hyperparameters in hw3.answers part3_transformer_encoder_hyperparams.
 
-# In[51]:
+# In[116]:
 
 
 from hw3.answers import part4_transformer_encoder_hyperparams
@@ -493,7 +493,7 @@ max_batches_per_epoch = None
 N_EPOCHS = 20
 
 
-# In[52]:
+# In[119]:
 
 
 toy_model = Encoder(vocab_size, embed_dim, num_heads, num_layers, hidden_dim, max_seq_length, window_size, dropout=dropout).to(device)
@@ -501,7 +501,7 @@ toy_optimizer = optim.Adam(toy_model.parameters(), lr=lr)
 criterion = nn.BCEWithLogitsLoss()
 
 
-# In[55]:
+# In[120]:
 
 
 # fit your model
@@ -521,7 +521,7 @@ toy_model.load_state_dict(toy_saved_state['model_state'])
 
 
 
-# In[56]:
+# In[109]:
 
 
 test.assertTrue(toy_best_acc >= 95)
@@ -532,21 +532,21 @@ test.assertTrue(toy_best_acc >= 95)
 # Congratulations! You are now ready to train your sentiment analysis classifier!
 # 
 
-# In[57]:
+# In[121]:
 
 
 max_batches_per_epoch = 500
 N_EPOCHS = 4
 
 
-# In[58]:
+# In[122]:
 
 
 model = Encoder(vocab_size, embed_dim, num_heads, num_layers, hidden_dim, max_seq_length, window_size, dropout).to(device)
 optimizer = optim.Adam(model.parameters(), lr=lr)
 
 
-# In[ ]:
+# In[112]:
 
 
 # fit your model
@@ -566,7 +566,7 @@ model.load_state_dict(saved_state['model_state'])
     
 
 
-# In[ ]:
+# In[113]:
 
 
 test.assertTrue(best_acc >= 65)
