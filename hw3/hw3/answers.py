@@ -101,6 +101,7 @@ def part2_vae_hyperparams():
 
 part2_q1 = r"""
 **Your answer:**
+<<<<<<< HEAD
 Looking at the loss function of the VAE, we can see that the reconstruction loss is the sum of the squared differences
 between the input and the output of the decoder, divided by the variance of the input: the $\sigma^2$ hyperparameter.
 This means that when $\sigma^2$ is low, the VAE is pushed to reconstruct the input more precisely, as is more heacily 
@@ -108,12 +109,15 @@ pentalize high differences. In practice this cal also lead to overfitting, since
 rateher then learn more general latent features.
 On the other hand, when $\sigma^2$ is high, the VAE is less strict about the reconstruction, which may allow
 the model to learn more robust, higher level features, but can also lead to underfitting. 
+=======
+>>>>>>> dd0feb20bdd90d858cf30993ea116ddb553e59b9
 
 
 """
 
 part2_q2 = r"""
 **Your answer:**
+<<<<<<< HEAD
 1. The reconstruction loss's purpose is to ensure that the model can reconstruct the input data well from the latent space.
 The KL divergence loss's purpose is to ensure that the latent space distribution is close to the prior distribution.
 
@@ -125,25 +129,36 @@ push the latent space to also be a standard normal distribution.
 like the prior distribution, making it possible to sample meaningful latent variables during generation.
 In addition, it also prevents overfitting by encoding into a more generalizable latent space, and it allows thes 
 interpolation and generation of new data points, because the latent space is similar to the prior distrubution.
+=======
+
+>>>>>>> dd0feb20bdd90d858cf30993ea116ddb553e59b9
 
 """
 
 part2_q3 = r"""
 **Your answer:**
+<<<<<<< HEAD
 We maximize the evidence distribution $p(X)$ because in generative modeling we want our model to assign high
 probability to the observed data. Intuitively, the better the model “explains” or “fits” the data, the larger
 $p(X)$ becomes. Hence, finding parameters that maximize $p(X)$ yields a model that best represents or generates
 the data we observe.
 (In practice we maximize an approximation of the evidence distribution (the ELBO), since the true evidence
 distribution is intractable to compute.)
+=======
+
+
+>>>>>>> dd0feb20bdd90d858cf30993ea116ddb553e59b9
 
 """
 
 part2_q4 = r"""
 **Your answer:**
+<<<<<<< HEAD
 We let the encoder output the log of the latent-space variance, i.e. $\log \sigma_{\alpha}^2$, instead of $\sigma_{\alpha}^2$ 
 directly in order to ensure that the resulting variance is always positive, and to improve numerical stability 
 by avoiding extremely large or small values that might arise if the network output without the log.
+=======
+>>>>>>> dd0feb20bdd90d858cf30993ea116ddb553e59b9
 
 """
 
@@ -180,6 +195,7 @@ def part3_gan_hyperparams():
     return hypers
 
 part3_q1 = r"""
+<<<<<<< HEAD
 Explain in detail why during training we sometimes need to maintain gradients when sampling from the GAN,
 and other times we don't. When are they maintained and why? When are they discarded and why?
 **Your answer:**
@@ -189,12 +205,16 @@ this feedback and adjust its weights accordingly, this is done by backpropagatin
 to the generator.
 On the other hand, we discard gradients when sampling from the GAN when we only want to generate new samples
 without training the generator, for example for inference or evaluation.
+=======
+**Your answer:**
+>>>>>>> dd0feb20bdd90d858cf30993ea116ddb553e59b9
 
 
 """
 
 part3_q2 = r"""
 **Your answer:**
+<<<<<<< HEAD
 1. When training a GAN to generate images, should we decide to stop training solely based on the fact that the Generator loss is below some threshold? Why or why not?
 No, when only the generator loss is below some threshold, we might still need to continue training.
 This is because this situation might happen even when the generator produces poor quality images, but the discriminator is even weaker, 
@@ -205,6 +225,9 @@ without reflecting actual progress in image quality
 2. What does it mean if the discriminator loss remains at a constant value while the generator loss decreases?
 It means that the discriminator is no longer improving and that it reached a "plateau" in its learning, meaning it can't improve anymore.
 When the generator loss decreases, it means that the generator is still learning and improving, producing higher quality samples which fool the Discriminator.
+=======
+
+>>>>>>> dd0feb20bdd90d858cf30993ea116ddb553e59b9
 
 """
 
@@ -265,6 +288,7 @@ constant, it will allow coverage of the entire sequence over all tokens.
 
 part5_q1 = r"""
 **Your answer:**
+<<<<<<< HEAD
 Both our fine-tuned models performed better than the trained from scratch model from the previous part 
 (both fine-tuned model gained accuracy of over 80%, while the model from the previous part gained accuracy of
 a little below 70%).
@@ -273,22 +297,30 @@ entirely to the task, and focus on optimizing both general and task-specific rep
 scratch requires learning everything from the ground up, including basic language understanding, which is less efficient.
 This won't always necessarily be the case on any downstream task. For example, if the downstream task domain
 significantly differs from the pre-training data, fine-tuning may not be as effective.
+=======
+
+>>>>>>> dd0feb20bdd90d858cf30993ea116ddb553e59b9
 
 """
 
 part5_q2 = r"""
 **Your answer:**
+<<<<<<< HEAD
 The results of freezing the last layers and fine-tuning only the last layers will likely be worse than fine-tuning
 the freezing the internal ones and fine-tuning the last ones. This is because the internal layers are responsible 
 for general features extraction, like capturing syntax and semantics, while the last layers are the ones that 
 are closer to the output space and are designed to produce task-specific representations, thus freezing them will
 significantly limit the model's ability to adapt to the new task, which is the basic idea behind fine-tuning.
+=======
+
+>>>>>>> dd0feb20bdd90d858cf30993ea116ddb553e59b9
 
 """
 
 
 part5_q3= r"""
 **Your answer:**
+<<<<<<< HEAD
 To use BERT for machine translation, we'd need to make changes to the model architecture and pre-training.
 First, BERT is a bidirectional encoder only model, but machine translation requires an encoder-decoder architecture -
 the encoder will process the input tokens from the source language ($x_t$), and the decoder will generate the 
@@ -296,21 +328,30 @@ output tokens ($y_t$), using previously generated tokens as input.
 
 A change in the pre-training (or fine tune) is required, since we'd need to train the model on two languages in parallel, 
 in order to teach the model how to translate between them.
+=======
+
+
+>>>>>>> dd0feb20bdd90d858cf30993ea116ddb553e59b9
 """
 
 part5_q4 = r"""
 **Your answer:**
+<<<<<<< HEAD
 RNNs are a good choice for tasks with strong temporal dependencies, where the current output heavily relies
 on previous inputs, such as speech recognition or real-time sensor data. They process sequences step-by-step
 in order, making them a good fit for data with a clear progression over time. 
 Additionally, RNNs are more memory-efficient than Transformers when working with very long sequences, as they
 don’t require computing attention over all input tokens at once. This makes them a better choice for limited
 resources or variable-length data.
+=======
+
+>>>>>>> dd0feb20bdd90d858cf30993ea116ddb553e59b9
 
 """
 
 part5_q5 = r"""
 **Your answer:**
+<<<<<<< HEAD
 NSP is a pre-trained task in BERT where the model is trained to predict whether two sentences are consecutive or 
 sampled independently from the dataset.
 The prediction occurs at the CLS token, a special token added at the start of the input sequence, which serves
@@ -319,6 +360,10 @@ The loss is the binary cross-entropy loss, where the labels indicate whether the
 While the NSP can help BERT understand sentence relationships, which is useful for tasks like sentence prediction
 and answering questions, it may not be crucial because language modeling already captures much of this implicitly.
 We may say that its importance depends on how much sentence-level reasoning the downstream tasks require.
+=======
+
+
+>>>>>>> dd0feb20bdd90d858cf30993ea116ddb553e59b9
 """
 
 
