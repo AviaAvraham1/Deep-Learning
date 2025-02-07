@@ -146,20 +146,19 @@ by avoiding extremely large or small values that might arise if the network outp
 # Part 3 answers
 def part3_gan_hyperparams():
     hypers = dict(
-        batch_size=0, h_dim=0, z_dim=0, x_sigma2=0, learn_rate=0.0, betas=(0.0, 0.0),
+        #batch_size=0, h_dim=0, z_dim=0, x_sigma2=0, learn_rate=0.0, betas=(0.0, 0.0),
     )
     # Tweak the hyperparameters to generate a former president.
     # ====== YOUR CODE: ======
     hypers = dict(
-        batch_size=64,  # Batch size for training
-        h_dim=128,      # Hidden dimension for generator/discriminator
-        z_dim=100,      # Latent dimension for noise vector
-        x_sigma2=1.0,   # Data variance (assuming normalized images)
-        learn_rate=2e-4,  # Learning rate for Adam optimizer
-        betas=(0.5, 0.999),  # Betas for Adam optimizer (momentum parameters)
+        batch_size=64, 
+        #h_dim=128,      
+        z_dim=128,      
+        #x_sigma2=1.0,   
+        #learn_rate=2e-4,  
+        betas=(0.5, 0.999), 
     )
 
-    # TODO: UNDERSTAND IF WE SHOULD LEAVE IT AS IT IS
     hypers["discriminator_optimizer"] = {
     'type':'Adam',
     'lr':0.0002,
@@ -170,8 +169,8 @@ def part3_gan_hyperparams():
         'lr':0.0002,
         'betas':(0.5, 0.999)
     }
-    hypers["data_label"] = 0
-    hypers["label_noise"] = 0.15
+    hypers["data_label"] = 1  # TODO should be 1?
+    hypers["label_noise"] = 0.15 #0.15
     # ========================
     return hypers
 
