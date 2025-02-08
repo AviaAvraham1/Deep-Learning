@@ -94,25 +94,25 @@ class Trainer(abc.ABC):
             #    simple regularization technique that is highly recommended.
             # ====== YOUR CODE: ======
             # copied from our implementation in hw2
+
+            def compute_epoch_loss(losses):
+                # If losses are tensors (they have the "item" attribute), convert them.
+                if losses and hasattr(losses[0], 'item'):
+                    return sum(loss.item() for loss in losses) / len(losses)
+                else:
+                    return sum(losses) / len(losses)
+
             kw["verbose"] = verbose
             epoch_train_result = self.train_epoch(dl_train, **kw)
             train_acc.append(epoch_train_result.accuracy)
-            # epoch_train_loss = sum(epoch_train_result.losses) / len(epoch_train_result.losses)
-            # train_loss.append(epoch_train_loss)
-            epoch_test_result = self.test_epoch(dl_test, **kw)
-            test_acc.append(epoch_test_result.accuracy)
-            # epoch_test_loss = sum(epoch_test_result.losses) / len(epoch_test_result.losses)
-            # test_loss.append(epoch_test_loss)
-            epoch_train_loss = sum([loss.item() for loss in epoch_train_result.losses]) / len(epoch_train_result.losses)
+            epoch_train_loss = compute_epoch_loss(epoch_train_result.losses)
             train_loss.append(epoch_train_loss)
 
-            epoch_test_loss = sum([loss.item() for loss in epoch_test_result.losses]) / len(epoch_test_result.losses)
-            epoch_train_loss = sum(epoch_train_result.losses) / len(epoch_train_result.losses)
-            train_loss.append(epoch_train_loss)
             epoch_test_result = self.test_epoch(dl_test, **kw)
             test_acc.append(epoch_test_result.accuracy)
-            epoch_test_loss = sum(epoch_test_result.losses) / len(epoch_test_result.losses)
+            epoch_test_loss = compute_epoch_loss(epoch_test_result.losses)
             test_loss.append(epoch_test_loss)
+
             
             # implement early stopping and save checkpoint
             if best_acc is None or epoch_test_result.accuracy > best_acc:
@@ -324,20 +324,17 @@ class RNNTrainer(Trainer):
 class VAETrainer(Trainer):
     def train_batch(self, batch) -> BatchResult:
         x, _ = batch
-        x = x.to(self.device)
+        x = x.to(self.device)  # Image batch (N,C,H,W)
+        # TODO: Train a VAE on one batch.
+        # ====== YOUR CODE: ======
+        recon_x, mu, log_sigma2 = self.model(x)
+        loss, data_loss, kldiv_loss = self.loss_fn(x, recon_x, mu, log_sigma2)
 
-        recon_x, mu, log_var = self.model(x)
-
-        data_loss = torch.nn.functional.mse_loss(recon_x, x, reduction='sum')
-
-        kl_div = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp())
-
-        loss = data_loss + kl_div
-
-        # Backpropagation
+        # backprop
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()
+        # ========================
 
         return BatchResult(loss.item(), 1 / data_loss.item())
 
@@ -346,13 +343,11 @@ class VAETrainer(Trainer):
         x = x.to(self.device)  # Image batch (N,C,H,W)
 
         with torch.no_grad():
-            recon_x, mu, log_var = self.model(x)
-
-            data_loss = torch.nn.functional.mse_loss(recon_x, x, reduction='sum')
-
-            kl_div = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp())
-
-            loss = data_loss + kl_div
+            # TODO: Evaluate a VAE on one batch.
+            # ====== YOUR CODE: ======
+            recon_x, mu, log_sigma2 = self.model(x)
+            loss, data_loss, kldiv_loss = self.loss_fn(x, recon_x, mu, log_sigma2)   
+            # ========================
 
         return BatchResult(loss.item(), 1 / data_loss.item())
 
