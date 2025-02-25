@@ -7,18 +7,20 @@ class Encoder(nn.Module):
     def __init__(self, latent_dim=128):
         super(Encoder, self).__init__()
         self.network = nn.Sequential(
-            nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, stride=1, padding=1), 
-            nn.BatchNorm2d(32), 
+            nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1),  # ✅ Stride replaces MaxPool
+            nn.BatchNorm2d(32),
             nn.ReLU(),
-            nn.MaxPool2d(2, 2),  # Reduces image size by half
-            
-            nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
+
+            nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1),  # ✅ Stride replaces MaxPool
             nn.BatchNorm2d(64),
             nn.ReLU(),
-            nn.MaxPool2d(2, 2),  # Again, halves the size
-            
+
+            nn.Conv2d(64, 128, kernel_size=3, stride=2, padding=1),  # ✅ Stride replaces MaxPool
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+
             nn.Flatten(),
-            nn.Linear(64 * 8 * 8, latent_dim)
+            nn.Linear(128 * 4 * 4, latent_dim)  # Adjusted to match new feature size
         )
 
     def forward(self, x):

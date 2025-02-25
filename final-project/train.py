@@ -11,8 +11,8 @@ def train_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, a
 
     # setup the optimizer with the encoder and decoder parameters
     optimizer = torch.optim.Adam(list(encoder.parameters()) + list(decoder.parameters()), lr=args.lr)
-    loss_fn = torch.nn.L1Loss()  # MAE loss (since we are requestd to report results in MAE)
-    # loss_fn = torch.nn.MSELoss()
+    # loss_fn = torch.nn.L1Loss()  # MAE loss (since we are requestd to report results in MAE)
+    loss_fn = torch.nn.MSELoss()
 
     # set the models to training mode
     encoder.train()
@@ -56,8 +56,8 @@ def train_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, a
         # save the best model based on validation loss
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
-            save_model(encoder, encoder_filename)
-            save_model(decoder, decoder_filename)
+            save_model(encoder, "models/"+encoder_filename)
+            save_model(decoder, "models/"+decoder_filename)
             logging.info(f"New best model saved (Val Loss: {best_val_loss:.4f})")
 
         # return to training mode
@@ -146,7 +146,7 @@ def train_classifier_on_frozen_encoder(encoder, classifier, train_loader, val_lo
         # save the best model based on validation accuracy
         if val_acc > best_val_acc:
             best_val_acc = val_acc
-            save_model(classifier, classifier_filename)
+            save_model(classifier, "models/"+classifier_filename)
             logging.info(f"New best classifier saved! (Val Acc: {best_val_acc:.4f})")
 
         classifier.train()  # return classifier to training mode

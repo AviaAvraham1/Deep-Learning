@@ -8,10 +8,10 @@ def load_data(args):
     
     # convert MNIST to 3-channel RGB if needed (by copying the same value to all channels) and to match CIFAR images size
     transform = transforms.Compose([
-        transforms.Grayscale(num_output_channels=3) if args.mnist else transforms.Lambda(lambda x: x),  # convert grayscale to RGB
-        transforms.Resize((32, 32)),  # resize MNIST to match CIFAR-10 dimensions
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5], std=[0.5]) if args.mnist else transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+        # transforms.Grayscale(num_output_channels=3) if args.mnist else transforms.Lambda(lambda x: x),  # convert grayscale to RGB
+        # transforms.Resize((32, 32)),  # resize MNIST to match CIFAR-10 dimensions
+        transforms.ToTensor()
+        # transforms.Normalize(mean=[0.5], std=[0.5]) if args.mnist else transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
     ])
 
     dataset_class = datasets.MNIST if args.mnist else datasets.CIFAR10
