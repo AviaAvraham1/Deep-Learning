@@ -56,10 +56,12 @@ if __name__ == "__main__":
                                 encoder_filename="encoder_frozen.pt",
                                 decoder_filename="trained_decoder.pt",
                                 log_filename="frozen_autoencoder.log")
+            plot_tsne(encoder, test_loader, args.device)
             print("Training Classifier on Frozen Encoder...")
             train_classifier_on_frozen_encoder(encoder, classifier, train_loader, val_loader, test_loader, args, 
                                             classifier_filename="frozen_encoder_classifier.pt", 
                                             log_filename="frozen_encoder_classifier.log")
+
         
         
     else:
