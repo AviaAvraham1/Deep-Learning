@@ -27,6 +27,8 @@ def get_args():
                         help='Whether to use MNIST (True) or CIFAR10 (False) data')
     parser.add_argument('--self-supervised', action='store_true', default=False,
                         help='Whether train self-supervised with reconstruction objective, or jointly with classifier for classification objective.')
+    parser.add_argument('--epochs', default=10, type=int, help='Number of epochs to train for')
+    parser.add_argument('--lr', default=1e-3, type=float, help='Learning rate for optimizer')
     parser.add_argument('--contrastive', action='store_true', default=False, help='Use contrastive learning during training') # added argument for convenience
 
     return parser.parse_args()
@@ -42,17 +44,24 @@ if __name__ == "__main__":
     classifier = Classifier(latent_dim=args.latent_dim, num_classes=NUM_CLASSES).to(args.device)
     
     if args.self_supervised:
-        decoder = Decoder(latent_dim=args.latent_dim).to(args.device)
-        print("Training Self-Supervised Autoencoder...")
-        train_autoencoder(encoder, decoder, train_loader, val_loader, args)
-        print("Training Classifier on Frozen Encoder...")
-        train_classifier_on_frozen_encoder(encoder, classifier, train_loader, val_loader, args)
-        
         if args.contrastive:
             print("Training Encoder with Contrastive Learning...")
             train_contrastive_encoder(encoder, train_loader, args)
             print("Training Classifier on Contrastive Encoder...")
             train_classifier_on_frozen_encoder(encoder, classifier, train_loader, val_loader, args)
+        else:
+            decoder = Decoder(latent_dim=args.latent_dim).to(args.device)
+            print("Training Self-Supervised Autoencoder...")
+            train_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, args, 
+                                encoder_filename="encoder_frozen.pt",
+                                decoder_filename="trained_decoder.pt",
+                                log_filename="frozen_autoencoder.log")
+            print("Training Classifier on Frozen Encoder...")
+            train_classifier_on_frozen_encoder(encoder, classifier, train_loader, val_loader, test_loader, args, 
+                                            classifier_filename="frozen_encoder_classifier.pt", 
+                                            log_filename="frozen_encoder_classifier.log")
+        
+        
     else:
         print("Training Encoder & Classifier Jointly...")
         train_joint_encoder_classifier(encoder, classifier, train_loader, val_loader, args, contrastive=args.contrastive)
