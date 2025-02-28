@@ -1,8 +1,14 @@
 from utils2 import save_model
 import torch
 import logging
+from tqdm import tqdm
 
 # TODO: implement the functions below. save the trained models, including the decoder
+
+SEED = 42
+torch.manual_seed(SEED)
+if torch.cuda.is_available():
+    torch.cuda.manual_seed(SEED)
 
 def train_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, args, encoder_filename, decoder_filename, log_filename):
 
@@ -22,7 +28,7 @@ def train_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, a
 
     for epoch in range(args.epochs):
         epoch_train_loss = 0
-        for images, _ in train_loader:
+        for images, _ in tqdm(train_loader):
             images = images.to(args.device)
             latent = encoder(images)
             reconstructed = decoder(latent)
