@@ -1,1 +1,1 @@
-srun -c 2 --gres=gpu:1 --pty python main.py --self-supervised --epochs 10 --batch-size 32 --lr 1e-3 --device cuda
+srun -c 2 --gres=gpu:1 --pty python main.py --self-supervised --epochs 20 --batch-size 32 --lr 1e-3 --device cuda

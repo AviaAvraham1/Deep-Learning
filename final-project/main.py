@@ -5,9 +5,10 @@ from utils import plot_tsne
 import numpy as np
 import random
 import argparse
-from utils2 import load_data
+from utils2 import load_data, load_model
 from train import train_autoencoder, train_classifier_on_frozen_encoder, train_joint_encoder_classifier, train_contrastive_encoder
 from classes import Encoder, Decoder, Classifier
+from evaluate import evaluate_classifier
 
 NUM_CLASSES = 10
 
@@ -52,15 +53,17 @@ if __name__ == "__main__":
         else:
             decoder = Decoder(latent_dim=args.latent_dim).to(args.device)
             print("Training Self-Supervised Autoencoder...")
-            train_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, args, 
-                                encoder_filename="encoder_frozen.pt",
-                                decoder_filename="trained_decoder.pt",
-                                log_filename="frozen_autoencoder.log")
-            plot_tsne(encoder, test_loader, args.device)
+            # train_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, args, 
+            #                     encoder_filename="encoder_frozen.pt",
+            #                     decoder_filename="trained_decoder.pt",
+            #                     log_filename="frozen_autoencoder.log")
+            # plot_tsne(encoder, test_loader, args.device)
+            encoder = load_model(encoder, "models/encoder_frozen.pt", args.device)
             print("Training Classifier on Frozen Encoder...")
             train_classifier_on_frozen_encoder(encoder, classifier, train_loader, val_loader, test_loader, args, 
                                             classifier_filename="frozen_encoder_classifier.pt", 
                                             log_filename="frozen_encoder_classifier.log")
+            evaluate_classifier(encoder, classifier, train_loader, val_loader, test_loader, args)
 
         
         
