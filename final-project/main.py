@@ -66,4 +66,4 @@ if __name__ == "__main__":
     else:
         print("Training Encoder & Classifier Jointly...")
         train_joint_encoder_classifier(encoder, classifier, train_loader, val_loader, test_loader, args)
-        # plot_tsne(encoder, test_loader, args.device)
+        plot_tsne(encoder, test_loader, args.device)
