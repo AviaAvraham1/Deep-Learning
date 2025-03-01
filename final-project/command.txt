@@ -1,5 +1,4 @@
-# TODO: run later to also get MAE results for CIFAR10
-sbatch -c 2 --gres=gpu:1 --pty python main.py --self-supervised --epochs 100 --batch-size 32 --lr 1e-3 --device cuda
+srun -c 2 --gres=gpu:1 --pty python main.py --self-supervised --epochs 100 --batch-size 32 --lr 1e-3 --device cuda
 
 # trained jointly mnist
 srun -c 2 --gres=gpu:1 --pty python main.py --mnist --epochs 10 --batch-size 32 --lr 1e-3 --device cuda

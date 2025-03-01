@@ -221,8 +221,8 @@ def train_joint_encoder_classifier(encoder, classifier, train_loader, val_loader
         # save best model
         if val_acc > best_val_acc:
             best_val_acc = val_acc
-            save_model(encoder, "models/encoder_joint.pth")
-            save_model(classifier, "models/classifier_joint.pth")
+            save_model(encoder, "models/encoder_joint.pt")
+            save_model(classifier, "models/classifier_joint.pt")
             logging.info(f"New best model saved! (Val Acc: {best_val_acc:.4f})")
 
     evaluate_classifier(encoder, classifier, train_loader, val_loader, test_loader, args)
