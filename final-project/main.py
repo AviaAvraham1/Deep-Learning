@@ -8,7 +8,7 @@ import argparse
 from utils2 import load_data, load_model
 from train import train_autoencoder, train_classifier_on_frozen_encoder, train_joint_encoder_classifier, train_contrastive_encoder
 from classes import Encoder, Decoder, Classifier
-from evaluate import evaluate_classifier
+from evaluate import evaluate_classifier, evaluate_autoencoder
 
 NUM_CLASSES = 10
 
@@ -63,10 +63,6 @@ if __name__ == "__main__":
             train_classifier_on_frozen_encoder(encoder, classifier, train_loader, val_loader, test_loader, args, 
                                             classifier_filename="frozen_encoder_classifier.pt", 
                                             log_filename="frozen_encoder_classifier.log")
-            evaluate_classifier(encoder, classifier, train_loader, val_loader, test_loader, args)
-
-        
-        
     else:
         print("Training Encoder & Classifier Jointly...")
         train_joint_encoder_classifier(encoder, classifier, train_loader, val_loader, args, contrastive=args.contrastive)
