@@ -47,9 +47,12 @@ if __name__ == "__main__":
     if args.self_supervised:
         if args.contrastive:
             print("Training Encoder with Contrastive Learning...")
-            train_contrastive_encoder(encoder, train_loader, args)
+            train_contrastive_encoder(encoder, train_loader, val_loader, test_loader, args)
+            plot_tsne(encoder, test_loader, args.device)
             print("Training Classifier on Contrastive Encoder...")
-            train_classifier_on_frozen_encoder(encoder, classifier, train_loader, val_loader, args)
+            train_classifier_on_frozen_encoder(encoder, classifier, train_loader, val_loader, test_loader, args, 
+                                            classifier_filename="frozen_contrastive_encoder_classifier.pt", 
+                                            log_filename="frozen_contrastive_encoder_classifier.log")
         else:
             decoder = Decoder(latent_dim=args.latent_dim).to(args.device)
             print("Training Self-Supervised Autoencoder...")

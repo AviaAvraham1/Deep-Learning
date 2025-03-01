@@ -2,3 +2,6 @@ srun -c 2 --gres=gpu:1 --pty python main.py --self-supervised --epochs 100 --bat
 
 # trained jointly mnist
 srun -c 2 --gres=gpu:1 --pty python main.py --epochs 20 --batch-size 32 --lr 1e-3 --device cuda
+
+# trained jointly mnist
+srun -c 2 --gres=gpu:1 --pty python main.py --self-supervised --mnist --contrastive --epochs 5 --batch-size 32 --lr 1e-3  --device cuda
