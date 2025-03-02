@@ -238,7 +238,7 @@ def train_joint_encoder_classifier(encoder, classifier, train_loader, val_loader
 
 def nt_xent_loss(z_i, z_j, temperature=0.5):
     """
-    Computes the SimCLR NT-Xent loss for a batch.
+    computes the SimCLR NT-Xent loss for a batch.
     Args:
         z_i: First view embeddings (batch, latent_dim)
         z_j: Second view embeddings (batch, latent_dim)
@@ -246,25 +246,25 @@ def nt_xent_loss(z_i, z_j, temperature=0.5):
     """
     batch_size = z_i.shape[0]
 
-    # normalize embeddings
+    # normalize embeddings (needed to apply cosine similarity)
     z_i = F.normalize(z_i, dim=1)
     z_j = F.normalize(z_j, dim=1)
 
-    # compute similarity matrix (dot product between all samples)
-    similarity_matrix = torch.cat([z_i, z_j], dim=0)  # 2N x latent_dim
+    # compute (cosine) similarity matrix (dot product between all samples)
+    similarity_matrix = torch.cat([z_i, z_j], dim=0)  # 2N x latent_dim (N is the batch size, 2N because each image has 2 augmentations)
     similarity_matrix = torch.mm(similarity_matrix, similarity_matrix.T)  # (2N x 2N)
 
-    # extract positive samples (diagonal shift)
+    # extract positive samples (they are batch-size apart)
     sim_ij = torch.diag(similarity_matrix, batch_size)  # Positive pairs
     sim_ji = torch.diag(similarity_matrix, -batch_size)  # Positive pairs
     positives = torch.cat([sim_ij, sim_ji], dim=0)
 
-    # compute denominator for all negatives
+    # compute denominator of the less term which consists of all negatives
     mask = torch.ones_like(similarity_matrix, dtype=torch.bool)
-    mask.fill_diagonal_(False)  # Remove self-similarity
+    mask.fill_diagonal_(False)  # remove self-similarity
     negatives = similarity_matrix[mask].view(2 * batch_size, -1)
 
-    # compute NT-Xent loss
+    # compute NT-Xent loss by the formula
     numerator = torch.exp(positives / temperature)
     denominator = torch.sum(torch.exp(negatives / temperature), dim=1)
 
