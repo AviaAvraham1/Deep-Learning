@@ -2,7 +2,7 @@
 srun -c 2 --gres=gpu:1 --pty python main.py --self-supervised --epochs 100 --batch-size 64 --lr 1e-3 --device cuda
 
 # trained jointly 
-srun -c 2 --gres=gpu:1 --pty python main.py --epochs 30 --batch-size 64 --lr 1e-3 --device cuda
+srun -c 2 --gres=gpu:1 --pty python main.py --mnist --epochs 30 --batch-size 64 --lr 1e-3 --device cuda
 
 # train contrastive self supervised CIFAR10
 srun -c 2 --gres=gpu:1 --pty python main.py --self-supervised --contrastive --epochs 50 --batch-size 64 --lr 1e-3 --device cuda

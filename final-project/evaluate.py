@@ -95,7 +95,7 @@ def plot_reconstruction(args, test_loader):
     encoder = Encoder().to(args.device)
     decoder = Decoder().to(args.device)
     dataset_class = "MNIST" if args.mnist else "CIFAR10"
-    encoder = load_model(encoder, f"models/encoder_frozen.pt", args.device)
-    decoder = load_model(decoder, f"models/trained_decoder.pt", args.device)
+    encoder = load_model(encoder, f"models/{dataset_class}_encoder_frozen.pt", args.device)
+    decoder = load_model(decoder, f"models/{dataset_class}_trained_decoder.pt", args.device)
     filename = f"reconstruction_results_{dataset_class.lower()}.png"
     plot_reconstructions_util(encoder, decoder, test_loader, args.device, filename=filename)
