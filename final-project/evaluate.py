@@ -99,3 +99,48 @@ def plot_reconstruction(args, test_loader):
     decoder = load_model(decoder, f"models/{dataset_class}_trained_decoder.pt", args.device)
     filename = f"reconstruction_results_{dataset_class.lower()}.png"
     plot_reconstructions_util(encoder, decoder, test_loader, args.device, filename=filename)
+
+def plot_interpolation(args, test_loader):
+    # Initialize encoder and decoder models on the specified device
+    encoder = Encoder().to(args.device)
+    decoder = Decoder().to(args.device)
+    dataset_class = "MNIST" if args.mnist else "CIFAR10"
+
+    # Load pre-trained models
+    encoder = load_model(encoder, f"models/{dataset_class}_encoder_frozen.pt", args.device)
+    decoder = load_model(decoder, f"models/{dataset_class}_trained_decoder.pt", args.device)
+
+    encoder.eval()
+    decoder.eval()
+
+    # Select 2 images from the test set
+    images, _ = next(iter(test_loader))
+    images = images[:2].to(args.device)
+
+    with torch.no_grad():
+        # Encode each image separately (unsqueeze to add the batch dimension)
+        latent1 = encoder(images[0].unsqueeze(0))
+        latent2 = encoder(images[1].unsqueeze(0))
+        
+        # Perform a 10-step linear interpolation between latent1 and latent2
+        num_steps = 10
+        alphas = torch.linspace(0, 1, steps=num_steps).to(args.device).view(-1, 1)
+        interpolated_latents = (1 - alphas) * latent1 + alphas * latent2
+        
+        # Decode the interpolated latent vectors
+        decoded_images = decoder(interpolated_latents)
+
+    # Convert decoded images to NumPy format
+    decoded_images = decoded_images.cpu().permute(0, 2, 3, 1).numpy() * 0.5 + 0.5  # Unnormalize
+
+    # Plot the interpolated images in one row
+    filename = f"interpolation_results_{dataset_class.lower()}.png"
+    import matplotlib.pyplot as plt  # Ensure matplotlib is imported
+    fig, axes = plt.subplots(1, num_steps, figsize=(15, 2))
+    for i in range(num_steps):
+        axes[i].imshow(decoded_images[i])
+        axes[i].axis("off")
+
+    plt.savefig(filename)
+    plt.close()
+    print(f"Interpolation results saved to {filename}")
