@@ -5,4 +5,4 @@ srun -c 2 --gres=gpu:1 --pty python main.py --self-supervised --epochs 100 --bat
 srun -c 2 --gres=gpu:1 --pty python main.py --mnist --epochs 30 --batch-size 64 --lr 1e-3 --device cuda
 
 # train contrastive self supervised CIFAR10
-srun -c 2 --gres=gpu:1 --pty python main.py --self-supervised --contrastive --epochs 50 --batch-size 128 --lr 1e-3 --device cuda
+srun -c 2 --gres=gpu:1 --pty python main.py --self-supervised --mnist --contrastive --epochs 20 --batch-size 128 --lr 1e-3 --device cuda

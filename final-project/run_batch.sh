@@ -12,17 +12,17 @@ echo "Starting SimCLR Training on GTX 1080 Ti"
 source activate cs236781-hw
 
 # Define batch size (use 64 first, fallback to 32 if OOM)
-BATCH_SIZE=64
+BATCH_SIZE=128
 
 # Try running with batch size 64
-python main.py --self-supervised --contrastive --epochs 100 --batch-size $BATCH_SIZE --lr 1e-3 --device cuda
+python main.py --self-supervised --contrastive --mnist --epochs 20 --batch-size $BATCH_SIZE --lr 1e-3 --device cuda
 EXIT_CODE=$?
 
 # If OOM error occurs, reduce batch size to 32 and retry
 if [[ $EXIT_CODE -ne 0 ]]; then
     echo "❌ Training failed. Reducing batch size to 32 and retrying..."
-    BATCH_SIZE=32
-    python main.py --self-supervised --contrastive --epochs 30 --batch-size $BATCH_SIZE --lr 1e-3 --device cuda
+    BATCH_SIZE=64
+    python main.py --self-supervised --contrastive --mnist --epochs 20 --batch-size $BATCH_SIZE --lr 1e-3 --device cuda
 fi
 
 echo "✅ Training Completed!"
