@@ -1,171 +1,148 @@
-2025-02-28 15:48:28,439 - Starting Autoencoder Training
-2025-02-28 15:52:17,769 - Starting Autoencoder Training
-2025-02-28 15:52:39,996 - Epoch [1/20], Train Loss: 0.0555, Val Loss: 0.0352
-2025-02-28 15:52:40,038 - New best model saved (Val Loss: 0.0352)
-2025-02-28 15:53:01,720 - Epoch [2/20], Train Loss: 0.0343, Val Loss: 0.0308
-2025-02-28 15:53:01,758 - New best model saved (Val Loss: 0.0308)
-2025-02-28 15:53:23,354 - Epoch [3/20], Train Loss: 0.0297, Val Loss: 0.0266
-2025-02-28 15:53:23,386 - New best model saved (Val Loss: 0.0266)
-2025-02-28 15:53:45,009 - Epoch [4/20], Train Loss: 0.0257, Val Loss: 0.0228
-2025-02-28 15:53:45,044 - New best model saved (Val Loss: 0.0228)
-2025-02-28 15:54:06,699 - Epoch [5/20], Train Loss: 0.0232, Val Loss: 0.0209
-2025-02-28 15:54:06,733 - New best model saved (Val Loss: 0.0209)
-2025-02-28 15:54:28,341 - Epoch [6/20], Train Loss: 0.0217, Val Loss: 0.0206
-2025-02-28 15:54:28,374 - New best model saved (Val Loss: 0.0206)
-2025-02-28 15:54:49,981 - Epoch [7/20], Train Loss: 0.0207, Val Loss: 0.0194
-2025-02-28 15:54:50,015 - New best model saved (Val Loss: 0.0194)
-2025-02-28 15:55:11,693 - Epoch [8/20], Train Loss: 0.0200, Val Loss: 0.0188
-2025-02-28 15:55:11,732 - New best model saved (Val Loss: 0.0188)
-2025-02-28 15:55:33,390 - Epoch [9/20], Train Loss: 0.0197, Val Loss: 0.0194
-2025-02-28 15:55:54,940 - Epoch [10/20], Train Loss: 0.0194, Val Loss: 0.0184
-2025-02-28 15:55:54,982 - New best model saved (Val Loss: 0.0184)
-2025-02-28 15:56:17,032 - Epoch [11/20], Train Loss: 0.0192, Val Loss: 0.0184
-2025-02-28 15:56:38,779 - Epoch [12/20], Train Loss: 0.0190, Val Loss: 0.0183
-2025-02-28 15:56:38,812 - New best model saved (Val Loss: 0.0183)
-2025-02-28 15:57:00,565 - Epoch [13/20], Train Loss: 0.0187, Val Loss: 0.0183
-2025-02-28 15:57:22,172 - Epoch [14/20], Train Loss: 0.0185, Val Loss: 0.0180
-2025-02-28 15:57:22,207 - New best model saved (Val Loss: 0.0180)
-2025-02-28 15:57:43,886 - Epoch [15/20], Train Loss: 0.0184, Val Loss: 0.0184
-2025-02-28 15:58:05,502 - Epoch [16/20], Train Loss: 0.0183, Val Loss: 0.0179
-2025-02-28 15:58:05,534 - New best model saved (Val Loss: 0.0179)
-2025-02-28 15:58:27,162 - Epoch [17/20], Train Loss: 0.0181, Val Loss: 0.0179
-2025-02-28 15:58:27,198 - New best model saved (Val Loss: 0.0179)
-2025-02-28 15:58:48,886 - Epoch [18/20], Train Loss: 0.0180, Val Loss: 0.0177
-2025-02-28 15:58:48,927 - New best model saved (Val Loss: 0.0177)
-2025-02-28 15:59:10,635 - Epoch [19/20], Train Loss: 0.0179, Val Loss: 0.0178
-2025-02-28 15:59:32,240 - Epoch [20/20], Train Loss: 0.0179, Val Loss: 0.0177
-2025-02-28 15:59:32,240 - Best Validation Loss: 0.0177
-2025-02-28 15:59:35,553 - Test reconstruction loss: 0.0176
-2025-02-28 15:59:35,553 - Autoencoder training complete
-2025-02-28 17:27:55,986 - Train MAE: 0.5914, Val MAE: 0.5920, Test MAE: 0.5930
-2025-02-28 16:56:35,565 - Starting Classifier Training on Frozen Encoder
-2025-02-28 16:56:55,062 - Epoch [1/100], Train Loss: 1.6864, Train Acc: 0.3988, Val Acc: 0.4591
-2025-02-28 16:56:55,080 - New best classifier saved! (Val Acc: 0.4591)
-2025-02-28 16:57:14,153 - Epoch [2/100], Train Loss: 1.5180, Train Acc: 0.4600, Val Acc: 0.4739
-2025-02-28 16:57:14,169 - New best classifier saved! (Val Acc: 0.4739)
-2025-02-28 16:57:33,257 - Epoch [3/100], Train Loss: 1.4496, Train Acc: 0.4819, Val Acc: 0.5049
-2025-02-28 16:57:33,274 - New best classifier saved! (Val Acc: 0.5049)
-2025-02-28 16:57:52,342 - Epoch [4/100], Train Loss: 1.4032, Train Acc: 0.5015, Val Acc: 0.5127
-2025-02-28 16:57:52,357 - New best classifier saved! (Val Acc: 0.5127)
-2025-02-28 16:58:11,465 - Epoch [5/100], Train Loss: 1.3606, Train Acc: 0.5128, Val Acc: 0.5152
-2025-02-28 16:58:11,479 - New best classifier saved! (Val Acc: 0.5152)
-2025-02-28 16:58:30,487 - Epoch [6/100], Train Loss: 1.3309, Train Acc: 0.5244, Val Acc: 0.5210
-2025-02-28 16:58:30,501 - New best classifier saved! (Val Acc: 0.5210)
-2025-02-28 16:58:48,986 - Epoch [7/100], Train Loss: 1.2977, Train Acc: 0.5383, Val Acc: 0.5321
-2025-02-28 16:58:49,000 - New best classifier saved! (Val Acc: 0.5321)
-2025-02-28 16:59:07,464 - Epoch [8/100], Train Loss: 1.2747, Train Acc: 0.5447, Val Acc: 0.5316
-2025-02-28 16:59:25,911 - Epoch [9/100], Train Loss: 1.2483, Train Acc: 0.5526, Val Acc: 0.5329
-2025-02-28 16:59:25,926 - New best classifier saved! (Val Acc: 0.5329)
-2025-02-28 16:59:44,405 - Epoch [10/100], Train Loss: 1.2320, Train Acc: 0.5596, Val Acc: 0.5427
-2025-02-28 16:59:44,419 - New best classifier saved! (Val Acc: 0.5427)
-2025-02-28 17:00:02,851 - Epoch [11/100], Train Loss: 1.2091, Train Acc: 0.5679, Val Acc: 0.5486
-2025-02-28 17:00:02,866 - New best classifier saved! (Val Acc: 0.5486)
-2025-02-28 17:00:21,277 - Epoch [12/100], Train Loss: 1.1913, Train Acc: 0.5746, Val Acc: 0.5463
-2025-02-28 17:00:39,579 - Epoch [13/100], Train Loss: 1.1785, Train Acc: 0.5767, Val Acc: 0.5441
-2025-02-28 17:00:57,841 - Epoch [14/100], Train Loss: 1.1651, Train Acc: 0.5855, Val Acc: 0.5539
-2025-02-28 17:00:57,856 - New best classifier saved! (Val Acc: 0.5539)
-2025-02-28 17:01:16,198 - Epoch [15/100], Train Loss: 1.1486, Train Acc: 0.5868, Val Acc: 0.5550
-2025-02-28 17:01:16,213 - New best classifier saved! (Val Acc: 0.5550)
-2025-02-28 17:01:34,656 - Epoch [16/100], Train Loss: 1.1351, Train Acc: 0.5950, Val Acc: 0.5518
-2025-02-28 17:01:53,144 - Epoch [17/100], Train Loss: 1.1205, Train Acc: 0.5997, Val Acc: 0.5495
-2025-02-28 17:02:11,563 - Epoch [18/100], Train Loss: 1.1138, Train Acc: 0.6038, Val Acc: 0.5506
-2025-02-28 17:02:29,995 - Epoch [19/100], Train Loss: 1.0986, Train Acc: 0.6080, Val Acc: 0.5558
-2025-02-28 17:02:30,011 - New best classifier saved! (Val Acc: 0.5558)
-2025-02-28 17:02:48,407 - Epoch [20/100], Train Loss: 1.0877, Train Acc: 0.6099, Val Acc: 0.5562
-2025-02-28 17:02:48,422 - New best classifier saved! (Val Acc: 0.5562)
-2025-02-28 17:03:06,868 - Epoch [21/100], Train Loss: 1.0830, Train Acc: 0.6138, Val Acc: 0.5621
-2025-02-28 17:03:06,882 - New best classifier saved! (Val Acc: 0.5621)
-2025-02-28 17:03:25,356 - Epoch [22/100], Train Loss: 1.0645, Train Acc: 0.6185, Val Acc: 0.5591
-2025-02-28 17:03:43,796 - Epoch [23/100], Train Loss: 1.0560, Train Acc: 0.6235, Val Acc: 0.5620
-2025-02-28 17:04:02,208 - Epoch [24/100], Train Loss: 1.0498, Train Acc: 0.6257, Val Acc: 0.5599
-2025-02-28 17:04:20,594 - Epoch [25/100], Train Loss: 1.0478, Train Acc: 0.6267, Val Acc: 0.5592
-2025-02-28 17:04:38,968 - Epoch [26/100], Train Loss: 1.0418, Train Acc: 0.6268, Val Acc: 0.5567
-2025-02-28 17:04:57,361 - Epoch [27/100], Train Loss: 1.0313, Train Acc: 0.6314, Val Acc: 0.5637
-2025-02-28 17:04:57,376 - New best classifier saved! (Val Acc: 0.5637)
-2025-02-28 17:05:15,764 - Epoch [28/100], Train Loss: 1.0248, Train Acc: 0.6326, Val Acc: 0.5614
-2025-02-28 17:05:34,146 - Epoch [29/100], Train Loss: 1.0211, Train Acc: 0.6369, Val Acc: 0.5614
-2025-02-28 17:05:52,546 - Epoch [30/100], Train Loss: 1.0102, Train Acc: 0.6370, Val Acc: 0.5599
-2025-02-28 17:06:10,950 - Epoch [31/100], Train Loss: 1.0064, Train Acc: 0.6388, Val Acc: 0.5638
-2025-02-28 17:06:10,965 - New best classifier saved! (Val Acc: 0.5638)
-2025-02-28 17:06:29,362 - Epoch [32/100], Train Loss: 1.0095, Train Acc: 0.6379, Val Acc: 0.5664
-2025-02-28 17:06:29,376 - New best classifier saved! (Val Acc: 0.5664)
-2025-02-28 17:06:47,777 - Epoch [33/100], Train Loss: 0.9915, Train Acc: 0.6443, Val Acc: 0.5656
-2025-02-28 17:07:06,247 - Epoch [34/100], Train Loss: 0.9835, Train Acc: 0.6478, Val Acc: 0.5585
-2025-02-28 17:07:24,712 - Epoch [35/100], Train Loss: 0.9758, Train Acc: 0.6515, Val Acc: 0.5629
-2025-02-28 17:07:43,170 - Epoch [36/100], Train Loss: 0.9830, Train Acc: 0.6474, Val Acc: 0.5715
-2025-02-28 17:07:43,186 - New best classifier saved! (Val Acc: 0.5715)
-2025-02-28 17:08:01,595 - Epoch [37/100], Train Loss: 0.9731, Train Acc: 0.6510, Val Acc: 0.5682
-2025-02-28 17:08:20,006 - Epoch [38/100], Train Loss: 0.9613, Train Acc: 0.6567, Val Acc: 0.5698
-2025-02-28 17:08:38,407 - Epoch [39/100], Train Loss: 0.9605, Train Acc: 0.6570, Val Acc: 0.5724
-2025-02-28 17:08:38,423 - New best classifier saved! (Val Acc: 0.5724)
-2025-02-28 17:08:56,768 - Epoch [40/100], Train Loss: 0.9541, Train Acc: 0.6573, Val Acc: 0.5698
-2025-02-28 17:09:15,152 - Epoch [41/100], Train Loss: 0.9495, Train Acc: 0.6597, Val Acc: 0.5721
-2025-02-28 17:09:33,519 - Epoch [42/100], Train Loss: 0.9500, Train Acc: 0.6605, Val Acc: 0.5711
-2025-02-28 17:09:51,928 - Epoch [43/100], Train Loss: 0.9485, Train Acc: 0.6613, Val Acc: 0.5740
-2025-02-28 17:09:51,944 - New best classifier saved! (Val Acc: 0.5740)
-2025-02-28 17:10:10,321 - Epoch [44/100], Train Loss: 0.9402, Train Acc: 0.6645, Val Acc: 0.5739
-2025-02-28 17:10:28,802 - Epoch [45/100], Train Loss: 0.9366, Train Acc: 0.6657, Val Acc: 0.5694
-2025-02-28 17:10:47,234 - Epoch [46/100], Train Loss: 0.9289, Train Acc: 0.6628, Val Acc: 0.5730
-2025-02-28 17:11:05,720 - Epoch [47/100], Train Loss: 0.9268, Train Acc: 0.6707, Val Acc: 0.5712
-2025-02-28 17:11:24,180 - Epoch [48/100], Train Loss: 0.9238, Train Acc: 0.6677, Val Acc: 0.5726
-2025-02-28 17:11:42,509 - Epoch [49/100], Train Loss: 0.9210, Train Acc: 0.6712, Val Acc: 0.5736
-2025-02-28 17:12:00,835 - Epoch [50/100], Train Loss: 0.9197, Train Acc: 0.6722, Val Acc: 0.5691
-2025-02-28 17:12:19,159 - Epoch [51/100], Train Loss: 0.9115, Train Acc: 0.6739, Val Acc: 0.5737
-2025-02-28 17:12:37,508 - Epoch [52/100], Train Loss: 0.9136, Train Acc: 0.6715, Val Acc: 0.5695
-2025-02-28 17:12:55,809 - Epoch [53/100], Train Loss: 0.9075, Train Acc: 0.6762, Val Acc: 0.5734
-2025-02-28 17:13:14,118 - Epoch [54/100], Train Loss: 0.9052, Train Acc: 0.6772, Val Acc: 0.5716
-2025-02-28 17:13:32,415 - Epoch [55/100], Train Loss: 0.9023, Train Acc: 0.6771, Val Acc: 0.5747
-2025-02-28 17:13:32,430 - New best classifier saved! (Val Acc: 0.5747)
-2025-02-28 17:13:50,735 - Epoch [56/100], Train Loss: 0.8969, Train Acc: 0.6796, Val Acc: 0.5713
-2025-02-28 17:14:09,069 - Epoch [57/100], Train Loss: 0.8985, Train Acc: 0.6786, Val Acc: 0.5719
-2025-02-28 17:14:27,484 - Epoch [58/100], Train Loss: 0.8876, Train Acc: 0.6820, Val Acc: 0.5704
-2025-02-28 17:14:45,989 - Epoch [59/100], Train Loss: 0.8905, Train Acc: 0.6805, Val Acc: 0.5728
-2025-02-28 17:15:04,479 - Epoch [60/100], Train Loss: 0.8908, Train Acc: 0.6798, Val Acc: 0.5683
-2025-02-28 17:15:22,951 - Epoch [61/100], Train Loss: 0.8803, Train Acc: 0.6834, Val Acc: 0.5701
-2025-02-28 17:15:41,406 - Epoch [62/100], Train Loss: 0.8801, Train Acc: 0.6847, Val Acc: 0.5701
-2025-02-28 17:15:59,843 - Epoch [63/100], Train Loss: 0.8762, Train Acc: 0.6872, Val Acc: 0.5709
-2025-02-28 17:16:18,225 - Epoch [64/100], Train Loss: 0.8777, Train Acc: 0.6861, Val Acc: 0.5768
-2025-02-28 17:16:18,241 - New best classifier saved! (Val Acc: 0.5768)
-2025-02-28 17:16:36,648 - Epoch [65/100], Train Loss: 0.8698, Train Acc: 0.6896, Val Acc: 0.5738
-2025-02-28 17:16:55,055 - Epoch [66/100], Train Loss: 0.8647, Train Acc: 0.6906, Val Acc: 0.5694
-2025-02-28 17:17:13,456 - Epoch [67/100], Train Loss: 0.8734, Train Acc: 0.6870, Val Acc: 0.5751
-2025-02-28 17:17:31,790 - Epoch [68/100], Train Loss: 0.8646, Train Acc: 0.6901, Val Acc: 0.5744
-2025-02-28 17:17:50,103 - Epoch [69/100], Train Loss: 0.8686, Train Acc: 0.6873, Val Acc: 0.5702
-2025-02-28 17:18:08,393 - Epoch [70/100], Train Loss: 0.8604, Train Acc: 0.6936, Val Acc: 0.5734
-2025-02-28 17:18:26,688 - Epoch [71/100], Train Loss: 0.8607, Train Acc: 0.6938, Val Acc: 0.5740
-2025-02-28 17:18:44,984 - Epoch [72/100], Train Loss: 0.8554, Train Acc: 0.6933, Val Acc: 0.5747
-2025-02-28 17:19:03,369 - Epoch [73/100], Train Loss: 0.8612, Train Acc: 0.6927, Val Acc: 0.5728
-2025-02-28 17:19:21,739 - Epoch [74/100], Train Loss: 0.8498, Train Acc: 0.6977, Val Acc: 0.5755
-2025-02-28 17:19:40,097 - Epoch [75/100], Train Loss: 0.8548, Train Acc: 0.6918, Val Acc: 0.5706
-2025-02-28 17:19:58,427 - Epoch [76/100], Train Loss: 0.8453, Train Acc: 0.6990, Val Acc: 0.5714
-2025-02-28 17:20:16,780 - Epoch [77/100], Train Loss: 0.8463, Train Acc: 0.6952, Val Acc: 0.5776
-2025-02-28 17:20:16,803 - New best classifier saved! (Val Acc: 0.5776)
-2025-02-28 17:20:35,141 - Epoch [78/100], Train Loss: 0.8467, Train Acc: 0.6990, Val Acc: 0.5769
-2025-02-28 17:20:53,564 - Epoch [79/100], Train Loss: 0.8398, Train Acc: 0.6992, Val Acc: 0.5725
-2025-02-28 17:21:12,002 - Epoch [80/100], Train Loss: 0.8449, Train Acc: 0.6978, Val Acc: 0.5740
-2025-02-28 17:21:30,401 - Epoch [81/100], Train Loss: 0.8297, Train Acc: 0.7043, Val Acc: 0.5730
-2025-02-28 17:21:48,935 - Epoch [82/100], Train Loss: 0.8413, Train Acc: 0.6972, Val Acc: 0.5754
-2025-02-28 17:22:08,021 - Epoch [83/100], Train Loss: 0.8370, Train Acc: 0.7003, Val Acc: 0.5745
-2025-02-28 17:22:27,156 - Epoch [84/100], Train Loss: 0.8295, Train Acc: 0.7049, Val Acc: 0.5751
-2025-02-28 17:22:46,247 - Epoch [85/100], Train Loss: 0.8370, Train Acc: 0.7026, Val Acc: 0.5753
-2025-02-28 17:23:05,357 - Epoch [86/100], Train Loss: 0.8338, Train Acc: 0.7011, Val Acc: 0.5785
-2025-02-28 17:23:05,373 - New best classifier saved! (Val Acc: 0.5785)
-2025-02-28 17:23:24,442 - Epoch [87/100], Train Loss: 0.8251, Train Acc: 0.7056, Val Acc: 0.5747
-2025-02-28 17:23:43,487 - Epoch [88/100], Train Loss: 0.8257, Train Acc: 0.7034, Val Acc: 0.5727
-2025-02-28 17:24:02,471 - Epoch [89/100], Train Loss: 0.8340, Train Acc: 0.7011, Val Acc: 0.5774
-2025-02-28 17:24:21,577 - Epoch [90/100], Train Loss: 0.8144, Train Acc: 0.7057, Val Acc: 0.5791
-2025-02-28 17:24:21,593 - New best classifier saved! (Val Acc: 0.5791)
-2025-02-28 17:24:40,692 - Epoch [91/100], Train Loss: 0.8204, Train Acc: 0.7056, Val Acc: 0.5727
-2025-02-28 17:24:59,772 - Epoch [92/100], Train Loss: 0.8172, Train Acc: 0.7077, Val Acc: 0.5773
-2025-02-28 17:25:18,884 - Epoch [93/100], Train Loss: 0.8261, Train Acc: 0.7036, Val Acc: 0.5754
-2025-02-28 17:25:37,985 - Epoch [94/100], Train Loss: 0.8169, Train Acc: 0.7046, Val Acc: 0.5756
-2025-02-28 17:25:57,086 - Epoch [95/100], Train Loss: 0.8104, Train Acc: 0.7087, Val Acc: 0.5715
-2025-02-28 17:26:16,180 - Epoch [96/100], Train Loss: 0.8089, Train Acc: 0.7093, Val Acc: 0.5732
-2025-02-28 17:26:35,322 - Epoch [97/100], Train Loss: 0.8132, Train Acc: 0.7093, Val Acc: 0.5734
-2025-02-28 17:26:54,443 - Epoch [98/100], Train Loss: 0.8180, Train Acc: 0.7079, Val Acc: 0.5675
-2025-02-28 17:27:13,550 - Epoch [99/100], Train Loss: 0.8104, Train Acc: 0.7095, Val Acc: 0.5733
-2025-02-28 17:27:32,639 - Epoch [100/100], Train Loss: 0.8104, Train Acc: 0.7104, Val Acc: 0.5739
-2025-02-28 17:27:32,639 - Best Validation Accuracy: 0.5791
-2025-02-28 17:27:35,938 - Test accuracy: 0.5908
-2025-02-28 17:27:35,938 - Classifier training complete
-2025-02-28 17:27:55,986 - Train Accuracy: 0.8779, Val Accuracy: 0.5739, Test Accuracy: 0.5908
+2025-03-04 13:30:57,735 - Starting Autoencoder Training
+2025-03-04 13:31:18,013 - Epoch [1/50], Train Loss: 0.0566, Val Loss: 0.0407
+2025-03-04 13:31:18,046 - New best model saved (Val Loss: 0.0407)
+2025-03-04 13:31:37,181 - Epoch [2/50], Train Loss: 0.0379, Val Loss: 0.0326
+2025-03-04 13:31:37,227 - New best model saved (Val Loss: 0.0326)
+2025-03-04 13:31:56,352 - Epoch [3/50], Train Loss: 0.0316, Val Loss: 0.0283
+2025-03-04 13:31:56,391 - New best model saved (Val Loss: 0.0283)
+2025-03-04 13:32:15,523 - Epoch [4/50], Train Loss: 0.0275, Val Loss: 0.0253
+2025-03-04 13:32:15,555 - New best model saved (Val Loss: 0.0253)
+2025-03-04 13:32:34,772 - Epoch [5/50], Train Loss: 0.0256, Val Loss: 0.0249
+2025-03-04 13:32:34,809 - New best model saved (Val Loss: 0.0249)
+2025-03-04 13:32:53,975 - Epoch [6/50], Train Loss: 0.0246, Val Loss: 0.0255
+2025-03-04 13:33:13,149 - Epoch [7/50], Train Loss: 0.0238, Val Loss: 0.0232
+2025-03-04 13:33:13,232 - New best model saved (Val Loss: 0.0232)
+2025-03-04 13:33:32,431 - Epoch [8/50], Train Loss: 0.0237, Val Loss: 0.0233
+2025-03-04 13:33:51,613 - Epoch [9/50], Train Loss: 0.0232, Val Loss: 0.0233
+2025-03-04 13:34:10,749 - Epoch [10/50], Train Loss: 0.0230, Val Loss: 0.0228
+2025-03-04 13:34:10,782 - New best model saved (Val Loss: 0.0228)
+2025-03-04 13:34:29,952 - Epoch [11/50], Train Loss: 0.0226, Val Loss: 0.0226
+2025-03-04 13:34:29,989 - New best model saved (Val Loss: 0.0226)
+2025-03-04 13:34:49,128 - Epoch [12/50], Train Loss: 0.0225, Val Loss: 0.0221
+2025-03-04 13:34:49,160 - New best model saved (Val Loss: 0.0221)
+2025-03-04 13:35:08,289 - Epoch [13/50], Train Loss: 0.0222, Val Loss: 0.0222
+2025-03-04 13:35:27,452 - Epoch [14/50], Train Loss: 0.0221, Val Loss: 0.0214
+2025-03-04 13:35:27,490 - New best model saved (Val Loss: 0.0214)
+2025-03-04 13:35:46,720 - Epoch [15/50], Train Loss: 0.0220, Val Loss: 0.0218
+2025-03-04 13:36:05,842 - Epoch [16/50], Train Loss: 0.0217, Val Loss: 0.0218
+2025-03-04 13:36:24,952 - Epoch [17/50], Train Loss: 0.0217, Val Loss: 0.0220
+2025-03-04 13:36:44,071 - Epoch [18/50], Train Loss: 0.0214, Val Loss: 0.0216
+2025-03-04 13:37:03,164 - Epoch [19/50], Train Loss: 0.0215, Val Loss: 0.0211
+2025-03-04 13:37:03,199 - New best model saved (Val Loss: 0.0211)
+2025-03-04 13:37:22,431 - Epoch [20/50], Train Loss: 0.0213, Val Loss: 0.0208
+2025-03-04 13:37:22,462 - New best model saved (Val Loss: 0.0208)
+2025-03-04 13:37:41,672 - Epoch [21/50], Train Loss: 0.0212, Val Loss: 0.0216
+2025-03-04 13:38:00,811 - Epoch [22/50], Train Loss: 0.0211, Val Loss: 0.0208
+2025-03-04 13:38:19,900 - Epoch [23/50], Train Loss: 0.0211, Val Loss: 0.0205
+2025-03-04 13:38:19,937 - New best model saved (Val Loss: 0.0205)
+2025-03-04 13:38:39,132 - Epoch [24/50], Train Loss: 0.0210, Val Loss: 0.0205
+2025-03-04 13:38:39,174 - New best model saved (Val Loss: 0.0205)
+2025-03-04 13:38:58,331 - Epoch [25/50], Train Loss: 0.0210, Val Loss: 0.0204
+2025-03-04 13:38:58,363 - New best model saved (Val Loss: 0.0204)
+2025-03-04 13:39:17,448 - Epoch [26/50], Train Loss: 0.0207, Val Loss: 0.0215
+2025-03-04 13:39:36,582 - Epoch [27/50], Train Loss: 0.0209, Val Loss: 0.0208
+2025-03-04 13:39:55,697 - Epoch [28/50], Train Loss: 0.0207, Val Loss: 0.0206
+2025-03-04 13:40:14,880 - Epoch [29/50], Train Loss: 0.0207, Val Loss: 0.0214
+2025-03-04 13:40:34,084 - Epoch [30/50], Train Loss: 0.0208, Val Loss: 0.0208
+2025-03-04 13:40:53,284 - Epoch [31/50], Train Loss: 0.0207, Val Loss: 0.0203
+2025-03-04 13:40:53,324 - New best model saved (Val Loss: 0.0203)
+2025-03-04 13:41:12,499 - Epoch [32/50], Train Loss: 0.0205, Val Loss: 0.0206
+2025-03-04 13:41:31,677 - Epoch [33/50], Train Loss: 0.0206, Val Loss: 0.0200
+2025-03-04 13:41:31,711 - New best model saved (Val Loss: 0.0200)
+2025-03-04 13:41:50,922 - Epoch [34/50], Train Loss: 0.0205, Val Loss: 0.0204
+2025-03-04 13:42:10,051 - Epoch [35/50], Train Loss: 0.0205, Val Loss: 0.0202
+2025-03-04 13:42:29,229 - Epoch [36/50], Train Loss: 0.0205, Val Loss: 0.0201
+2025-03-04 13:42:48,336 - Epoch [37/50], Train Loss: 0.0205, Val Loss: 0.0205
+2025-03-04 13:43:07,478 - Epoch [38/50], Train Loss: 0.0205, Val Loss: 0.0206
+2025-03-04 13:43:26,584 - Epoch [39/50], Train Loss: 0.0205, Val Loss: 0.0202
+2025-03-04 13:43:45,770 - Epoch [40/50], Train Loss: 0.0204, Val Loss: 0.0201
+2025-03-04 13:44:04,961 - Epoch [41/50], Train Loss: 0.0203, Val Loss: 0.0197
+2025-03-04 13:44:04,994 - New best model saved (Val Loss: 0.0197)
+2025-03-04 13:44:24,157 - Epoch [42/50], Train Loss: 0.0203, Val Loss: 0.0202
+2025-03-04 13:44:43,298 - Epoch [43/50], Train Loss: 0.0204, Val Loss: 0.0207
+2025-03-04 13:45:02,453 - Epoch [44/50], Train Loss: 0.0203, Val Loss: 0.0204
+2025-03-04 13:45:21,581 - Epoch [45/50], Train Loss: 0.0203, Val Loss: 0.0201
+2025-03-04 13:45:40,724 - Epoch [46/50], Train Loss: 0.0203, Val Loss: 0.0202
+2025-03-04 13:45:59,856 - Epoch [47/50], Train Loss: 0.0204, Val Loss: 0.0201
+2025-03-04 13:46:18,936 - Epoch [48/50], Train Loss: 0.0203, Val Loss: 0.0203
+2025-03-04 13:46:38,095 - Epoch [49/50], Train Loss: 0.0202, Val Loss: 0.0199
+2025-03-04 13:46:57,324 - Epoch [50/50], Train Loss: 0.0202, Val Loss: 0.0200
+2025-03-04 13:46:57,324 - Best Validation Loss: 0.0197
+2025-03-04 13:47:00,465 - Test reconstruction MAE: 0.0199
+2025-03-04 13:47:00,465 - Autoencoder training complete
+2025-03-04 13:51:05,688 - Starting Classifier Training on Frozen Encoder
+2025-03-04 13:51:21,977 - Epoch [1/50], Train Loss: 1.6262, Train Acc: 0.4216, Val Acc: 0.4823
+2025-03-04 13:51:21,989 - New best classifier saved! (Val Acc: 0.4823)
+2025-03-04 14:37:50,366 - Starting Classifier Training on Frozen Encoder
+2025-03-04 14:38:07,045 - Epoch [1/50], Train Loss: 1.6279, Train Acc: 0.4210, Val Acc: 0.4816
+2025-03-04 14:38:07,059 - New best classifier saved! (Val Acc: 0.4816)
+2025-03-04 14:38:23,357 - Epoch [2/50], Train Loss: 1.4374, Train Acc: 0.4855, Val Acc: 0.5063
+2025-03-04 14:38:23,372 - New best classifier saved! (Val Acc: 0.5063)
+2025-03-04 14:38:39,599 - Epoch [3/50], Train Loss: 1.3531, Train Acc: 0.5159, Val Acc: 0.5132
+2025-03-04 14:38:39,617 - New best classifier saved! (Val Acc: 0.5132)
+2025-03-04 14:38:55,766 - Epoch [4/50], Train Loss: 1.2956, Train Acc: 0.5373, Val Acc: 0.5294
+2025-03-04 14:38:55,779 - New best classifier saved! (Val Acc: 0.5294)
+2025-03-04 14:39:11,951 - Epoch [5/50], Train Loss: 1.2485, Train Acc: 0.5534, Val Acc: 0.5393
+2025-03-04 14:39:11,965 - New best classifier saved! (Val Acc: 0.5393)
+2025-03-04 14:39:28,184 - Epoch [6/50], Train Loss: 1.2014, Train Acc: 0.5726, Val Acc: 0.5483
+2025-03-04 14:39:28,197 - New best classifier saved! (Val Acc: 0.5483)
+2025-03-04 14:39:44,312 - Epoch [7/50], Train Loss: 1.1702, Train Acc: 0.5799, Val Acc: 0.5525
+2025-03-04 14:39:44,325 - New best classifier saved! (Val Acc: 0.5525)
+2025-03-04 14:40:00,451 - Epoch [8/50], Train Loss: 1.1427, Train Acc: 0.5911, Val Acc: 0.5514
+2025-03-04 14:40:16,599 - Epoch [9/50], Train Loss: 1.1224, Train Acc: 0.5987, Val Acc: 0.5541
+2025-03-04 14:40:16,613 - New best classifier saved! (Val Acc: 0.5541)
+2025-03-04 14:40:32,765 - Epoch [10/50], Train Loss: 1.0943, Train Acc: 0.6081, Val Acc: 0.5555
+2025-03-04 14:40:32,779 - New best classifier saved! (Val Acc: 0.5555)
+2025-03-04 14:40:48,955 - Epoch [11/50], Train Loss: 1.0733, Train Acc: 0.6192, Val Acc: 0.5581
+2025-03-04 14:40:48,968 - New best classifier saved! (Val Acc: 0.5581)
+2025-03-04 14:41:05,244 - Epoch [12/50], Train Loss: 1.0518, Train Acc: 0.6232, Val Acc: 0.5628
+2025-03-04 14:41:05,258 - New best classifier saved! (Val Acc: 0.5628)
+2025-03-04 14:41:21,501 - Epoch [13/50], Train Loss: 1.0332, Train Acc: 0.6286, Val Acc: 0.5608
+2025-03-04 14:41:37,670 - Epoch [14/50], Train Loss: 1.0182, Train Acc: 0.6311, Val Acc: 0.5618
+2025-03-04 14:41:53,883 - Epoch [15/50], Train Loss: 1.0023, Train Acc: 0.6407, Val Acc: 0.5619
+2025-03-04 14:42:10,103 - Epoch [16/50], Train Loss: 0.9905, Train Acc: 0.6432, Val Acc: 0.5668
+2025-03-04 14:42:10,117 - New best classifier saved! (Val Acc: 0.5668)
+2025-03-04 14:42:26,286 - Epoch [17/50], Train Loss: 0.9772, Train Acc: 0.6485, Val Acc: 0.5626
+2025-03-04 14:42:42,413 - Epoch [18/50], Train Loss: 0.9648, Train Acc: 0.6539, Val Acc: 0.5673
+2025-03-04 14:42:42,429 - New best classifier saved! (Val Acc: 0.5673)
+2025-03-04 14:42:58,523 - Epoch [19/50], Train Loss: 0.9553, Train Acc: 0.6572, Val Acc: 0.5716
+2025-03-04 14:42:58,536 - New best classifier saved! (Val Acc: 0.5716)
+2025-03-04 14:43:14,751 - Epoch [20/50], Train Loss: 0.9390, Train Acc: 0.6617, Val Acc: 0.5717
+2025-03-04 14:43:14,765 - New best classifier saved! (Val Acc: 0.5717)
+2025-03-04 14:43:30,971 - Epoch [21/50], Train Loss: 0.9370, Train Acc: 0.6660, Val Acc: 0.5716
+2025-03-04 14:43:47,099 - Epoch [22/50], Train Loss: 0.9136, Train Acc: 0.6712, Val Acc: 0.5695
+2025-03-04 14:44:03,235 - Epoch [23/50], Train Loss: 0.9156, Train Acc: 0.6725, Val Acc: 0.5717
+2025-03-04 14:44:19,422 - Epoch [24/50], Train Loss: 0.9052, Train Acc: 0.6752, Val Acc: 0.5720
+2025-03-04 14:44:19,435 - New best classifier saved! (Val Acc: 0.5720)
+2025-03-04 14:44:35,505 - Epoch [25/50], Train Loss: 0.8911, Train Acc: 0.6791, Val Acc: 0.5758
+2025-03-04 14:44:35,520 - New best classifier saved! (Val Acc: 0.5758)
+2025-03-04 14:44:51,635 - Epoch [26/50], Train Loss: 0.8892, Train Acc: 0.6806, Val Acc: 0.5709
+2025-03-04 14:45:07,726 - Epoch [27/50], Train Loss: 0.8758, Train Acc: 0.6865, Val Acc: 0.5716
+2025-03-04 14:45:23,848 - Epoch [28/50], Train Loss: 0.8688, Train Acc: 0.6897, Val Acc: 0.5715
+2025-03-04 14:45:40,090 - Epoch [29/50], Train Loss: 0.8625, Train Acc: 0.6915, Val Acc: 0.5746
+2025-03-04 14:45:56,351 - Epoch [30/50], Train Loss: 0.8508, Train Acc: 0.6953, Val Acc: 0.5731
+2025-03-04 14:46:12,594 - Epoch [31/50], Train Loss: 0.8510, Train Acc: 0.6955, Val Acc: 0.5724
+2025-03-04 14:46:28,772 - Epoch [32/50], Train Loss: 0.8447, Train Acc: 0.6970, Val Acc: 0.5753
+2025-03-04 14:46:44,876 - Epoch [33/50], Train Loss: 0.8305, Train Acc: 0.7005, Val Acc: 0.5755
+2025-03-04 14:47:00,986 - Epoch [34/50], Train Loss: 0.8275, Train Acc: 0.7008, Val Acc: 0.5715
+2025-03-04 14:47:17,222 - Epoch [35/50], Train Loss: 0.8261, Train Acc: 0.7039, Val Acc: 0.5821
+2025-03-04 14:47:17,235 - New best classifier saved! (Val Acc: 0.5821)
+2025-03-04 14:47:33,502 - Epoch [36/50], Train Loss: 0.8186, Train Acc: 0.7062, Val Acc: 0.5761
+2025-03-04 14:47:49,670 - Epoch [37/50], Train Loss: 0.8148, Train Acc: 0.7076, Val Acc: 0.5786
+2025-03-04 14:48:05,785 - Epoch [38/50], Train Loss: 0.8107, Train Acc: 0.7098, Val Acc: 0.5789
+2025-03-04 14:48:21,928 - Epoch [39/50], Train Loss: 0.8117, Train Acc: 0.7091, Val Acc: 0.5764
+2025-03-04 14:48:38,049 - Epoch [40/50], Train Loss: 0.7949, Train Acc: 0.7138, Val Acc: 0.5799
+2025-03-04 14:48:54,171 - Epoch [41/50], Train Loss: 0.7921, Train Acc: 0.7125, Val Acc: 0.5751
+2025-03-04 14:49:10,385 - Epoch [42/50], Train Loss: 0.7940, Train Acc: 0.7145, Val Acc: 0.5761
+2025-03-04 14:49:26,589 - Epoch [43/50], Train Loss: 0.7832, Train Acc: 0.7195, Val Acc: 0.5775
+2025-03-04 14:49:42,779 - Epoch [44/50], Train Loss: 0.7856, Train Acc: 0.7179, Val Acc: 0.5769
+2025-03-04 14:49:58,945 - Epoch [45/50], Train Loss: 0.7779, Train Acc: 0.7183, Val Acc: 0.5794
+2025-03-04 14:50:15,163 - Epoch [46/50], Train Loss: 0.7743, Train Acc: 0.7234, Val Acc: 0.5742
+2025-03-04 14:50:31,348 - Epoch [47/50], Train Loss: 0.7736, Train Acc: 0.7219, Val Acc: 0.5787
+2025-03-04 14:50:47,484 - Epoch [48/50], Train Loss: 0.7678, Train Acc: 0.7239, Val Acc: 0.5798
+2025-03-04 14:51:03,642 - Epoch [49/50], Train Loss: 0.7560, Train Acc: 0.7273, Val Acc: 0.5778
+2025-03-04 14:51:19,809 - Epoch [50/50], Train Loss: 0.7567, Train Acc: 0.7286, Val Acc: 0.5802
+2025-03-04 14:51:19,809 - Best Validation Accuracy: 0.5821
+2025-03-04 14:51:37,644 - Train Accuracy: 0.8806, Val Accuracy: 0.5802, Test Accuracy: 0.5825
+2025-03-04 14:51:37,644 - Classifier training complete
+

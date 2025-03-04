@@ -21,27 +21,25 @@ def train_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, a
     logging.basicConfig(filename="logs/"+log_filename, level=logging.INFO, format="%(asctime)s - %(message)s")
     logging.info("Starting Autoencoder Training")
 
-    optimizer = torch.optim.Adam(list(encoder.parameters()) + list(decoder.parameters()), lr=args.lr)
-    loss_fn = torch.nn.MSELoss() 
+    optimizer = optim.Adam(
+        list(encoder.parameters()) + list(decoder.parameters()), 
+        lr=args.lr, weight_decay=1e-5  # ✅ L2 regularization added
+    )
+    loss_fn = torch.nn.MSELoss()  # ✅ Use MSE Loss for smoother reconstructions
 
     encoder.train()
     decoder.train()
-
-    best_val_loss = float('inf')  # track best validation loss
+    best_val_loss = float('inf')
 
     for epoch in range(args.epochs):
         epoch_train_loss = 0
         for images, _ in tqdm(train_loader):
             images = images.to(args.device)
+
             latent = encoder(images)
-
-            latent += 0.05 * torch.randn_like(latent)  # small Gaussian noise added
-
-            # forward pass
             reconstructed = decoder(latent)
             loss = loss_fn(reconstructed, images)
 
-            # backpropagation
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -50,7 +48,7 @@ def train_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, a
 
         avg_train_loss = epoch_train_loss / len(train_loader)
 
-        # validation Step
+        # Validation Step
         encoder.eval()
         decoder.eval()
         epoch_val_loss = 0
@@ -59,9 +57,6 @@ def train_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, a
             for images, _ in val_loader:
                 images = images.to(args.device)
                 latent = encoder(images)
-
-                latent += 0.05 * torch.randn_like(latent)  # small Gaussian noise added
-
                 reconstructed = decoder(latent)
                 loss = loss_fn(reconstructed, images)
                 epoch_val_loss += loss.item()
@@ -70,22 +65,35 @@ def train_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, a
 
         logging.info(f"Epoch [{epoch+1}/{args.epochs}], Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}")
 
-        # save the best model based on validation loss
+        # Save best model
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
-            save_model(encoder, "models/"+encoder_filename)
-            save_model(decoder, "models/"+decoder_filename)
+            torch.save(encoder.state_dict(), "models/" + encoder_filename)
+            torch.save(decoder.state_dict(), "models/" + decoder_filename)
             logging.info(f"New best model saved (Val Loss: {best_val_loss:.4f})")
 
-        # return to training mode
         encoder.train()
         decoder.train()
 
     logging.info(f"Best Validation Loss: {best_val_loss:.4f}")
 
-    evaluate_autoencoder(encoder, decoder, train_loader, val_loader, test_loader, args.device)
+    # Test Evaluation
+    encoder.eval()
+    decoder.eval()
+    total_test_loss = 0
 
+    with torch.no_grad():
+        for images, _ in test_loader:
+            images = images.to(args.device)
+            latent = encoder(images)
+            reconstructed = decoder(latent)
+            loss = loss_fn(reconstructed, images)
+            total_test_loss += loss.item()
+
+    avg_test_loss = total_test_loss / len(test_loader)
+    logging.info(f"Test reconstruction MAE: {avg_test_loss:.4f}")
     logging.info("Autoencoder training complete")
+
 
 
 

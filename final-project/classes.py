@@ -1,66 +1,71 @@
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.optim as optim
+import torch
+
 
 """ These are implementations to use in the different training variations."""
+
 
 class Encoder(nn.Module):
     def __init__(self, latent_dim=128):
         super(Encoder, self).__init__()
         self.network = nn.Sequential(
-            nn.Conv2d(3, 32, kernel_size=3, padding=1, stride=2),
-            nn.BatchNorm2d(32),
-            nn.LeakyReLU(0.2),
+            nn.Conv2d(3, 32, kernel_size=3, padding=1),  
+            nn.BatchNorm2d(32),  
+            nn.ELU(),  
+            nn.MaxPool2d(2, 2),  # ✅ Better downsampling (32x32 → 16x16)
 
-            nn.Conv2d(32, 64, kernel_size=3, padding=1, stride=2),
+            nn.Conv2d(32, 64, kernel_size=3, padding=1),  
             nn.BatchNorm2d(64),
-            nn.LeakyReLU(0.2),
+            nn.ELU(),
+            nn.MaxPool2d(2, 2),  # ✅ 16x16 → 8x8
 
-            nn.Conv2d(64, 128, kernel_size=3, padding=1, stride=1),
+            nn.Conv2d(64, 128, kernel_size=3, padding=1),  
             nn.BatchNorm2d(128),
-            nn.LeakyReLU(0.2),
+            nn.ELU(),
+            nn.MaxPool2d(2, 2),  # ✅ 8x8 → 4x4
 
-            nn.Conv2d(128, 128, kernel_size=3, padding=1, stride=2),
+            nn.Conv2d(128, 128, kernel_size=3, padding=1),  
             nn.BatchNorm2d(128),
-            nn.LeakyReLU(0.2),
-
-            nn.Conv2d(128, 128, kernel_size=3, padding=1, stride=1),
-            nn.BatchNorm2d(128),
-            nn.LeakyReLU(0.2),
-
-            nn.Flatten(),
-            nn.Linear(128 * 4 * 4, latent_dim)
+            nn.ELU()
         )
+        self.fc = nn.Linear(128 * 4 * 4, latent_dim)  # ✅ Fully connected layer
 
     def forward(self, x):
-        return self.network(x)
-
+        x = self.network(x)
+        x = x.view(x.shape[0], -1)  # Flatten
+        x = self.fc(x)
+        return x
+    
 
 class Decoder(nn.Module):
     def __init__(self, latent_dim=128):
         super(Decoder, self).__init__()
-        self.linear = nn.Linear(latent_dim, 128 * 4 * 4)
+        self.fc = nn.Linear(latent_dim, 128 * 4 * 4)
 
         self.network = nn.Sequential(
-            nn.ConvTranspose2d(128, 128, kernel_size=4, stride=2, padding=1, output_padding=0),
-            nn.BatchNorm2d(128),
-            nn.LeakyReLU(0.2),
+            nn.Upsample(scale_factor=2),  # ✅ Upsample before ConvTranspose
+            nn.ConvTranspose2d(128, 128, kernel_size=3, padding=1),
+            nn.ELU(),
 
-            nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1, output_padding=0),
-            nn.BatchNorm2d(64),
-            nn.LeakyReLU(0.2),
+            nn.Upsample(scale_factor=2),  # ✅ 8x8 → 16x16
+            nn.ConvTranspose2d(128, 64, kernel_size=3, padding=1),
+            nn.ELU(),
 
-            nn.ConvTranspose2d(64, 32, kernel_size=4, stride=2, padding=1, output_padding=0),
-            nn.BatchNorm2d(32),
-            nn.LeakyReLU(0.2),
+            nn.Upsample(scale_factor=2),  # ✅ 16x16 → 32x32
+            nn.ConvTranspose2d(64, 32, kernel_size=3, padding=1),
+            nn.ELU(),
 
-            nn.Conv2d(32, 3, kernel_size=3, padding=1),
-            nn.Tanh()
+            nn.Conv2d(32, 3, kernel_size=3, padding=1),  # ✅ Output Layer
+            nn.Tanh()  # ✅ Normalize output between -1 and 1
         )
 
     def forward(self, x):
-        x = self.linear(x)
+        x = self.fc(x)
         x = x.view(x.shape[0], 128, 4, 4)
         return self.network(x)
+
 
 class Classifier(nn.Module):
     def __init__(self, latent_dim=128, num_classes=10):
