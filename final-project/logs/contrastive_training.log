@@ -1,0 +1,16 @@
+2025-03-04 16:50:53,815 - Starting Contrastive Learning with SimCLR
+2025-03-04 16:53:35,223 - Epoch [1/20], Train Loss: 4.4230, Val Loss: 4.3361
+2025-03-04 16:53:35,242 - New best encoder saved (Val Loss: 4.3361)
+2025-03-04 16:56:13,903 - Epoch [2/20], Train Loss: 4.1779, Val Loss: 4.1597
+2025-03-04 16:56:13,921 - New best encoder saved (Val Loss: 4.1597)
+2025-03-04 16:58:52,110 - Epoch [3/20], Train Loss: 4.1083, Val Loss: 4.1433
+2025-03-04 16:58:52,157 - New best encoder saved (Val Loss: 4.1433)
+2025-03-04 17:01:30,319 - Epoch [4/20], Train Loss: 4.0793, Val Loss: 4.0764
+2025-03-04 17:01:30,338 - New best encoder saved (Val Loss: 4.0764)
+2025-03-04 17:04:09,089 - Epoch [5/20], Train Loss: 4.0525, Val Loss: 4.0451
+2025-03-04 17:04:09,109 - New best encoder saved (Val Loss: 4.0451)
+2025-03-04 17:06:47,551 - Epoch [6/20], Train Loss: 4.0366, Val Loss: 4.0458
+2025-03-04 17:09:25,864 - Epoch [7/20], Train Loss: 4.0185, Val Loss: 4.0360
+2025-03-04 17:09:25,881 - New best encoder saved (Val Loss: 4.0360)
+2025-03-04 17:12:03,784 - Epoch [8/20], Train Loss: 4.0025, Val Loss: 4.0208
+2025-03-04 17:12:03,803 - New best encoder saved (Val Loss: 4.0208)
