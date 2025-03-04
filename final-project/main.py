@@ -8,7 +8,7 @@ import argparse
 from utils2 import load_data, load_model
 from train import train_autoencoder, train_classifier_on_frozen_encoder, train_joint_encoder_classifier, train_contrastive_encoder
 from classes import Encoder, Decoder, Classifier
-from evaluate import evaluate_classifier, evaluate_autoencoder, plot_reconstruction
+from evaluate import evaluate_classifier, evaluate_autoencoder, plot_reconstruction, plot_interpolation
 
 NUM_CLASSES = 10
 
@@ -40,9 +40,9 @@ if __name__ == "__main__":
     freeze_seeds(args.seed)
 
     train_loader, val_loader, test_loader = load_data(args)
-
-    # plot_reconstruction(args, test_loader)
-
+    # print("plotting")
+    plot_interpolation(args, test_loader)
+    # exit(0)
     encoder = Encoder(latent_dim=args.latent_dim).to(args.device)
     classifier = Classifier(latent_dim=args.latent_dim, num_classes=NUM_CLASSES).to(args.device)
     
